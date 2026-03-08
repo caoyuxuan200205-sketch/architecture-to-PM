@@ -2721,6 +2721,14 @@ export function GamePage() {
     });
 
     const handleConfirmOffer = () => {
+      // 增加提示逻辑：如果用户有 offer 但未选择，弹窗或阻止
+      if (qualified.length > 0 && !selectedOfferId) {
+        // 这里简单做一个 window.confirm 或者直接 toast 提示
+        // 考虑到 UI 风格，我们可以在按钮上方显示红字提示，或者直接用 window.confirm
+        if (!window.confirm("你目前拥有 Offer 但未选择任何一项，继续将导致【无 Offer 结局】。确定要放弃所有机会吗？")) {
+          return;
+        }
+      }
       const finalEnding = calculateEndingWithOffer(stats, selectedOfferId);
       setEnding(finalEnding);
       setPhase("ending");
@@ -2811,14 +2819,20 @@ export function GamePage() {
                 。
               </p>
             )}
+            
+            {!selectedOfferId && qualified.length > 0 && (
+              <p className="text-[13px] mt-2 text-red-400">
+                ⚠ 请点击上方卡片选择一个 Offer，否则将默认为放弃所有机会。
+              </p>
+            )}
           </div>
 
           <button
             onClick={handleConfirmOffer}
             className="w-full py-3.5 rounded-xl text-[15px] transition-all hover:opacity-90 flex items-center justify-center gap-2"
-            style={{ background: accent, color: "#070d1c" }}
+            style={{ background: (!selectedOfferId && qualified.length > 0) ? "rgba(255,255,255,0.1)" : accent, color: (!selectedOfferId && qualified.length > 0) ? textSecondary : "#070d1c" }}
           >
-            确认，查看结局 →
+            {(!selectedOfferId && qualified.length > 0) ? "放弃 Offer 并查看结局" : "确认，查看结局 →"}
           </button>
         </div>
       </div>
