@@ -1,5 +1,5 @@
 import { useState, useCallback, type CSSProperties } from "react";
-import { RefreshCw, ChevronRight, Zap, TrendingUp, TrendingDown, BookOpen } from "lucide-react";
+import { RefreshCw, ChevronRight, Zap, TrendingUp, TrendingDown, BookOpen, TriangleAlert } from "lucide-react";
 
 // ================================================================
 // SECTION 1: 数据层（所有数组，方便后续扩展）
@@ -8,8 +8,8 @@ import { RefreshCw, ChevronRight, Zap, TrendingUp, TrendingDown, BookOpen } from
 const SCHOOLS_BY_TIER: Record<number, string[]> = {
   4: ["清华大学", "北京大学"],
   3: ["同济大学", "东南大学", "湖南大学", "华中科技大学", "天津大学", "华南理工大学", "哈尔滨工业大学", "大连理工大学", "重庆大学", "西安建筑科技大学", "浙江大学"],
-  2: ["北京建筑大学", "北京工业大学", "中央美术学院", "郑州大学", "苏州大学", "合肥工业大学", "西南交通大学"],
-  1: ["安徽建筑大学", "深圳大学", "青岛理工大学", "沈阳建筑大学", "昆明理工大学", "河北工业大学", "南京工业大学", "烟台大学", "华侨大学"],
+  2: ["北京建筑大学", "北京工业大学", "中央美术学院", "郑州大学", "苏州大学", "合肥工业大学", "西南交通大学", "河北工业大学"],
+  1: ["安徽建筑大学", "深圳大学", "青岛理工大学", "沈阳建筑大学", "昆明理工大学", "南京工业大学", "烟台大学", "华侨大学"],
 };
 
 const OVERSEAS_SCHOOLS = [
@@ -102,6 +102,7 @@ interface GameEvent {
   effects: Partial<Record<StatKey, EffectValue>>;
   condition?: (ctx: { stats: Stats; isOverseas: boolean; semester: number }) => boolean;
   repeatable?: boolean;
+  type?: "positive" | "negative";
 }
 
 interface CampusEvent {
@@ -246,226 +247,270 @@ const EVENTS: GameEvent[] = [
     id: "e01", title: "导师催稿",
     description: "凌晨一点十七分，手机在枕头边震动。你眯着眼睛划开，导师的微信只有八个字：‘明天早上九点，初稿发我。’你盯着天花板看了五分钟，然后爬起来打开电脑。屏幕亮起的瞬间，你发现窗外对面那栋宿舍楼，还有三扇窗户也亮着同样的CAD暖光。你们隔着黑暗遥遥相望，像一群守夜的灯塔管理员。",
     effects: { arch: 5, stress: -8, selfDoubt: 5 },
+    type: "negative",
   },
   {
     id: "e02", title: "同门拿到字节实习",
     description: "同门在群里发了一张字节跳动产品实习的offer截图，配文‘终于上岸了’，后面跟着二十个‘牛啊’。你盯着那张图看了很久，放大、缩小、再放大，试图从那些像素里找到一点自己未来的形状。你点了一个赞，然后关掉微信，继续改那张改了八遍的平面图。CAD里那个房间的尺寸是3.6米×4.2米，你不知道谁会在里面生活，就像你不知道三个月后的自己在哪个工位里生活。",
     effects: { selfDoubt: 8, ageAnxiety: 5 },
+    type: "negative",
   },
   {
     id: "e03", title: "面试官质疑转行背景",
     description: "视频面试进行到第十五分钟，面试官把眼镜往上推了推，看着你的简历说：‘你学建筑的，做产品能行吗？’你开始解释空间思维如何迁移到信息架构，剖面图如何对应层级逻辑，他说‘嗯嗯’的时候眼睛在看屏幕的另一个角落。挂掉电话后你发现手心里全是汗，窗外的阳光刺眼得有点不真实。你想起本科第一次交大作业时，老师也问过类似的问题：‘你觉得自己真的适合学建筑吗？",
     effects: { expression: -3, selfDoubt: 7 },
+    type: "negative",
   },
   {
     id: "e04", title: "论文AIGC查重超标",
     description: "新版知网查重报告弹出来的时候你正在吃泡面。28%，红色的数字像医院化验单上的异常指标。导师的邮件紧随其后，加粗的四个字：‘全部重写。’你把泡面推到一边，盯着那篇写了两个月的论文，发现里面的每一句话都像是从某个你崇拜的学者那里偷来的，包括那些你以为自己原创的思考。窗外的天黑得很慢，你知道这又是一个睡不着的夜晚。",
     effects: { arch: -3, stress: -10, ageAnxiety: 5 },
+    type: "negative",
   },
   {
     id: "e05", title: "学长延毕",
     description: "刷朋友圈时看到学长发了一条：‘多留一年，也许是礼物。’配图是他工位上的模型残骸和一盆快死的绿萝。评论区全是表情包，没有人说话。你盯着那条动态看了很久，想起去年他还在组会上分享自己的论文进度，意气风发地说‘明年这时候就毕业了’。你关掉手机，打开论文，光标在第一章标题后面一闪一闪，像一个倒计时的钟。",
     effects: { ageAnxiety: 8, selfDoubt: 6 },
+    type: "negative",
   },
   {
     id: "e06", title: "第十八封拒信",
     description: "邮箱提示音响起的时候你正在改图。点开一看：‘感谢您的投递，经综合评估，您的情况与我们的需求暂不匹配。’这是你今天的第二封，也是这个月的第十八封。你把邮件截图，发到只有三个人的小群里，群里沉默了三分钟，然后有人发了一个‘抱抱’的表情包。你关掉邮箱，继续画那条被导师说‘不够干净’的轴线。CAD里那条线是直的，你不知道自己还能不能走出一条直的路。",
     effects: { selfDoubt: 7, expression: -2 },
+    type: "negative",
   },
   {
     id: "e07", title: "凌晨三点改图",
     description: "凌晨三点十七分，你终于把图纸调整到自己满意的状态，正准备保存然后睡觉。群里突然弹出一条消息，是导师：‘这个轴线比例不对，明天早上九点我要看新版本。’你盯着那行字看了十秒，然后默默把刚闭合的CAD文件重新打开。屏幕的光映在脸上，你发现镜子里的人眼眶有点红。你想发一条朋友圈，打了几个字又删掉，最后什么都没发。",
     effects: { stress: -12, arch: 4 },
+    type: "negative",
   },
   {
     id: "e08", title: "导师让做私活",
     description: "导师把你叫到办公室，说手上有个地产项目的方案，让你帮忙做一下，‘算是练练手，当实践机会’。稿费两个字他提都没提。你点头说好，回到工位打开CAD，心想这大概就是行业里说的‘用作品换作品’。做到一半你发现自己比做自己的课题还认真，因为你知道这个方案可能会真的建成，而你自己的论文可能永远只停留在PDF里。",
     effects: { arch: 5, stress: -6, money: 6 },
+    type: "negative",
   },
   {
     id: "e09", title: "JD写着'优先985'",
     description: "秋招季的第一天，你满怀希望地打开招聘网站，却发现所有心仪的岗位JD上都刺眼地标注着'985优先'。你的手指在鼠标上停顿了足足十秒，仿佛那四个字符是某种无法逾越的审判。你想起七年前高考放榜的那个下午，父母眼中一闪而过的失望，如今化作屏幕上一行冰冷的文字。你关掉页面，房间里只剩下显示器微弱的光映在你脸上，像一场无声的葬礼。",
     effects: { selfDoubt: 6, ageAnxiety: 4 },
+    type: "negative",
   },
   {
     id: "e10", title: "海归抢同一岗位",
     description: "LinkedIn上突然弹出一个新动态：一个在硅谷工作两年的海归回国了，开始和你投同一批岗位。你点开他的简历，全英文的履历像一面镜子，照出你所有的不安——他有Google实习，你有熬夜改图；他有顶会论文，你有课程作业；他24岁，你25岁。最扎心的是，他的个人简介里写着'热爱探索跨领域创新'，而你的简历上还挂着'建筑专业力85'。你默默关掉页面，感觉自己的青春像被压缩成了一行行苍白的对比项。",
     effects: { selfDoubt: 8, ageAnxiety: 5 },
     condition: ({ isOverseas }) => !isOverseas,
+    type: "negative",
   },
   {
     id: "e11", title: "HC冻结",
     description: "你通过了五轮面试，最后一轮面试官微笑着对你说'期待共事'。你等了整整三周，每天刷新邮箱一百次。终于，HR的邮件来了，内容却让你心脏骤停：'由于业务调整，该岗位的HC暂时冻结，后续有进展会再联系您。'你盯着'冻结'两个字，感觉自己的职业生涯也被一同冻在了这个冰冷的春天。你回复'好的，谢谢'，然后盯着屏幕发呆，直到夜幕降临，房间里只剩下电脑散热器发出的微弱嗡鸣，像是某种哀鸣。",
     effects: { selfDoubt: 10, ageAnxiety: 8 },
+    type: "negative",
   },
   {
     id: "e12", title: "实习工资不够房租",
     description: "终于拿到实习offer，你兴奋地打开邮件，却看到月薪比你预期低了40%。你不死心，在地图上搜索公司附近的合租房，发现最便宜的单间也要押二付一。计算器敲下来，扣完房租每月只剩不到800块——刚好够吃饭，但不够买任何希望。你想起父母说'实习不要太计较工资，重要的是学习'，但你不知道该怎么告诉他们，在这个城市，连生存都成了需要精密计算的建筑学问题。",
     effects: { money: -6, selfDoubt: 5 },
+    type: "negative",
   },
   {
     id: "e13", title: "导师不让去实习",
     description: "组会上，你鼓起勇气提出想去实习，导师放下手中的论文，目光扫过会议室里每一个人的脸，最后定格在你身上：'你们还是以科研为主，不要总想着出去实习。你们来读研究生是为了做学问的。'他的声音不大，却像一堵墙压下来。会议室里死一般寂静，你能听到自己心跳的声音。你低下头，看着笔记本上画了一半的产品流程图，感觉那些线条正在一点点褪色，变回CAD里冰冷的轴线。",
     effects: { stress: -8, selfDoubt: 6 },
+    type: "negative",
   },
   {
     id: "e14", title: "家里催问出路",
     description: "电话那头，母亲的声音带着小心翼翼的试探：'你同学都找到工作了，你到底有什么打算？学建筑的不是很好找工作吗？'你看着窗外，夕阳把天空染成了一种温暖的橘红色，但你只觉得冷。你想起八年前高考填志愿的那个下午，你指着建筑学专业说'我想设计让人幸福的空间'。如今，你连自己的空间都设计不了。你轻声说'再给我一点时间'，挂掉电话后，你在窗前站了很久，直到夜色吞没最后一丝光亮。",
     effects: { ageAnxiety: 10, selfDoubt: 7 },
+    type: "negative",
   },
   {
     id: "e15", title: "设计院朋友圈",
     description: "深夜刷朋友圈，看到前辈晒了一张凌晨三点在设计院工位的照片——屏幕上是密密麻麻的施工图，旁边摆着一杯冷掉的咖啡。配文：'用青春换作品。'点赞列表里全是设计院的同事，一个个熟悉的头像像是一场无声的集体献祭。你盯着那张照片看了很久，突然想起本科时老师说的'建筑是凝固的音乐'，现在你只觉得，那音乐听起来像是熬夜后心脏不规律的跳动声。你点了赞，然后关掉手机，继续改你的产品原型图。",
     effects: { selfDoubt: 5, arch: 3 },
+    type: "negative",
   },
   {
     id: "e16", title: "雅思5.5",
     description: "雅思成绩出来了，5.5。你需要至少6.5才能申请那些海外岗位。你盯着屏幕上那个数字，感觉它像一个巨大的嘲讽——你花了三个月，每天早起背单词，晚上练听力，结果只进步了0.5。你在退考政策页面停留了很久，鼠标在'申请退考'按钮上悬停，最终却点击了'重新报名'。支付成功的提示音响起时，你感觉那不是一笔考试费，而是为自己迟迟无法突破的瓶颈缴纳的赎金。",
     effects: { english: -5, selfDoubt: 8, ageAnxiety: 5 },
     condition: ({ stats }) => stats.english < 65,
+    type: "negative",
   },
   {
     id: "e17", title: "认识转行学长",
     description: "在转行交流群里，你鼓起勇气加了一个已经成功转产品的学长。他毕业于同济，现在在网易做PM。通过好友验证后，他第一句话是：'建筑转产品？我懂。'然后发来一份整理好的备考资料，足足有3个G。你点开文件夹，看到里面分门别类地写着'产品方法论''面试真题''建筑思维迁移案例'。你盯着屏幕，突然鼻子一酸——这是你转行以来第一次，感觉有人真正理解你走过的每一步荆棘。",
     effects: { network: 8, logic: 3, selfDoubt: -6 },
+    type: "positive",
   },
   {
     id: "e18", title: "线下产品沙龙",
     description: "你参加了一个线下产品沙龙，场地不大，但挤满了人。你鼓起勇气和三个互联网从业者聊天，其中一个居然是你上次面试官的前同事。你们交换了五张名片，你的手指有些颤抖——那些小小的卡片握在手里，沉甸甸的，像是握住了某种可能性。散场时，你站在地铁口，看着城市的霓虹灯，第一次感觉自己像一个可以有选择的人，而不是被选择的对象。",
     effects: { network: 10, expression: 4, selfDoubt: -4 },
+    type: "positive",
   },
   {
     id: "e19", title: "知乎热帖",
     description: "深夜，知乎推送了一条热帖：'建筑生转行失败，现在35岁失业在家'。你鬼使神差地点进去，把楼主三千字的自述看了三遍，又把所有高赞评论都读了一遍。评论区像一面照妖镜，映出无数个可能的你——有人转行产品三年被裁，有人考公失败，有人创业负债。最扎心的一条评论是：'这不是个例，这是我们这代建筑生的集体命运。'你关掉页面，房间里一片漆黑，只有手机屏幕的光映在你脸上，像在审判一个还未发生的未来。",
     effects: { ageAnxiety: 12, selfDoubt: 8 },
+    type: "negative",
   },
   {
     id: "e20", title: "竞品分析全组分享",
     description: "你做的竞品分析PPT被实习导师拿去在全组分享。三十多人的会议室里，他指着你的逻辑框架说：'这个结构很清晰，大家可以学习一下。'你坐在后排，手指紧紧攥着衣角，感受到一种陌生的、安静的骄傲——这是你转行以来第一次，不是因为'建筑背景'被特殊看待，而是单纯因为'做得好'被认可。散会后，有同事过来问你：'你是学建筑的？这思维太产品了。'你笑了笑，心里某个紧绷了很久的弦，突然松了一点点。",
     effects: { logic: 5, expression: 6, selfDoubt: -8, network: 3 },
+    type: "positive",
   },
   {
     id: "e21", title: "导师消失两周",
     description: "导师已经两周没回消息了。论文进度完全停滞，你发了四条微信，每条都显示'已读'，但石沉大海。你盯着聊天界面，那四个绿色的'已读'标记像四只冷漠的眼睛，看着你在焦虑中一点点沉没。你不确定应该继续等，还是假装这段时间根本不存在——就像建筑图纸上那些被擦掉的辅助线，从未存在过，却留下无法忽视的痕迹。",
     effects: { arch: -5, stress: -10, ageAnxiety: 7 },
+    type: "negative",
   },
   {
     id: "e22", title: "开题被毙",
     description: "开题报告被导师当场毙掉，会议室里空气凝固。他说：'方向不对，重新想。'五个字，像五颗钉子把你钉在椅子上。你在宿舍里坐了两个小时，窗外有人在踢球，欢呼声一阵阵传来，你听着球鞋踩地的声音，什么都没有想，或者说，想了太多以至于大脑一片空白。你突然想起本科设计课第一次被老师否定方案时，你还能倔强地重来，现在你只觉得累，累到连失望都显得奢侈。",
     effects: { arch: -3, selfDoubt: 9, ageAnxiety: 5 },
+    type: "negative",
   },
   {
     id: "e23", title: "身体亮红灯",
     description: "连续熬夜两个月后，身体终于亮起红灯。校医院医生看着化验单，眉头微皱：'要注意休息，你的肝功能指标有几项偏高。'你付了128块检查费，走出医院，看着天空，觉得那片蓝色遥远得不像真的。你想起上周还在熬夜改图，为了一个转角细节纠结了三小时，现在突然觉得可笑——你连自己的身体健康都设计不好，却在为一个虚拟空间的完美而拼命。",
     effects: { stress: -15, money: -4 },
+    type: "negative",
   },
   {
     id: "e24", title: "大厂学长指导",
     description: "一个大厂PM学长主动联系你，给你做了整整一小时的简历修改，还模拟了一轮面试。结束时他说：'你有一种建筑生特有的结构感，这是真正稀缺的东西，不要把它当作包袱。'你盯着屏幕，突然眼眶发热——这是你转行以来第一次，有人告诉你那六年建筑学习不是浪费，而是一种独特的资产。你第一次觉得，也许那些熬夜画的图、那些被否定的方案、那些自我怀疑的夜晚，都没有白费。",
     effects: { expression: 8, logic: 5, network: 6, selfDoubt: -10 },
+    type: "positive",
   },
   {
     id: "e25", title: "毕业晚会",
     description: "建筑学院毕业晚会，你看着同学们情绪各不相同，有人说'终于出去了，老娘等这一天等得好苦啊！！！'，有人说'还会再见吗?燕子，再见的时候你要幸福，好不好，燕子，你要开心，你要幸福，好不好，开心啊，幸福。你的世界没有我了，没关系，你要自己幸福。燕子、燕子、燕子，没有你我怎么活呀……'。你站在人群边缘，不确定自己属于哪一种人。",
     effects: { selfDoubt: 5, arch: 3 },
     condition: ({ semester }) => semester >= 5,
+    type: "negative",
   },
   {
     id: "e26", title: "拿到事务所实习",
     description: "你同时拿到了OMA和Zaha Hadid建筑事务所的暑期实习，虽然不是目标方向，但能够走进那个你未来无数次向往的办公室，你还是有点激动。阳光从高窗洒下来，照在那些模型和图纸上，你觉得这才是你想象中的建筑。带你的建筑师说：‘你的空间感很好。’你笑了，心想：终于有人说我好了。",
     effects: { arch: 8, money: 6, network: 4 },
+    type: "positive",
   },
   {
     id: "e27", title: "改版方案全场最高分",
     description: "你做的APP改版方案在实习汇报上拿了全场最高分。大家鼓掌的时候，你突然想到，这大概是你第一次因为一个屏幕里的东西被肯定。散会后有人问你：‘你之前学建筑的？怎么想到做这个？’你说：‘可能因为建筑太慢了，我想做点快的东西。’",
     effects: { logic: 6, expression: 8, selfDoubt: -12 },
+    type: "positive",
   },
   {
     id: "e28", title: "战友回归建筑",
     description: "转行群里一个认识半年的战友突然宣布：‘想清楚了，还是回建筑吧。’他说自己不适合互联网的节奏，还是喜欢画图的感觉。你盯着他的消息，感觉一种不明来源的恐惧悄悄放大。你想起他之前和你一样，每天在群里打卡学产品。现在他退出了，你还在群里。",
     effects: { selfDoubt: 10, ageAnxiety: 6 },
+    type: "negative",
   },
   {
     id: "e29", title: "互联网裁员新闻",
     description: "看到新闻：某大厂宣布校招缩减40%，优化部分业务线。评论区里有应届生问：'那我们怎么办？'置顶的回复说：'先活着再说。'",
     effects: { ageAnxiety: 10, selfDoubt: 6 },
+    type: "negative",
   },
   {
     id: "e30", title: "家里表示支持",
     description: "爸妈说：'不管你去哪，我们支持你，别给自己太大压力。'你挂掉电话，在门口站了一会儿，感觉有什么东西松动了，但不知道是好是坏。",
     effects: { selfDoubt: -10, ageAnxiety: -5, stress: 8 },
+    type: "positive",
   },
   {
     id: "e31", title: "失眠连续一周",
     description: "连续一周，你每天睡眠不足五小时。闭上眼睛，不是梦见在改图，就是在一个没有尽头的走廊里找一扇永远打不开的门。早上醒来，镜子里的人眼眶深陷，眼睛里布满了红血丝，像一张被过度渲染的效果图。你想起本科时老师说'建筑是时间的艺术'，现在你觉得，时间正在用最残酷的方式雕刻你——不是用灵感，而是用失眠、焦虑和一个个熬不到头的深夜。",
     effects: { stress: -10, selfDoubt: 5, ageAnxiety: 3 },
+    type: "negative",
   },
   {
     id: "e32", title: "GPA不达标",
     description: "你偶然发现自己的均绩只有3.2，而心仪的大厂要求3.5以上。你重新看了一遍成绩单，把每一门课的分数都记在纸上，像是在进行某种考古挖掘——试图从这些数字里找到自己为何沦落至此的证据。你发现，那些得了A的建筑设计课，现在对你转行毫无帮助；而那些勉强及格的编程课，却是你此刻最需要的。你盯着那张纸，感觉它像一份判决书，宣告你过去六年的努力方向全是错的。",
     effects: { selfDoubt: 8, ageAnxiety: 4 },
+    type: "negative",
   },
   {
     id: "e33", title: "Hackathon二等奖",
     description: "连续48小时的Hackathon结束后，你和两个CS同学一起站在领奖台上，聚光灯刺得你睁不开眼。当主持人宣布你们获得二等奖时，你身边的同学兴奋地撞了撞你的肩膀，低声说：'你那用户旅程图画得比我们所有人都好太多了，简直像在解构一座建筑。'你看着屏幕上自己画的那些线条，突然意识到这可能是你六年来第一次，不是因为'建筑'被质疑，而是因为'建筑'被赞美。掌声中，你感觉眼眶有点发热，不知道是因为熬夜，还是因为某种迟来的肯定。",
     effects: { logic: 8, network: 7, expression: 5, selfDoubt: -7 },
+    type: "positive",
   },
   {
     id: "e34", title: "HR嫌缺乏互联网经验",
     description: "面试间里，HR翻看着你的简历，手指在'建筑学硕士'那一行停留了足足五秒。她抬起头，露出职业化的微笑：'你的背景挺有意思，但我们这个岗位更需要有互联网实操经验的。'你鼓起勇气追问：'您觉得什么样算互联网经验？'她愣了一下，眼神飘向窗外，仿佛在寻找一个不存在的定义，最后轻声说：'就是比较实际的那种。'那一刻你明白了，'实际'两个字像一道无形的墙，把你和那个世界隔开。你点点头，说了声谢谢，走出会议室时，感觉自己的六年青春像一张被揉皱的草图纸，上面写满了'不实际'。",
     effects: { selfDoubt: 8, expression: -2 },
+    type: "negative",
   },
   {
     id: "e35", title: "转行分析文章爆了",
     description: "深夜，你将自己对建筑行业转型困境的思考写成文章，点击了发布。三天后，你打开平台，发现那篇文章被转发了上千次，评论区挤满了建筑生的留言：'终于有人把这件事说清楚了'、'每一个字都在写我'、'这是我们这代人的集体困境'。私信框里闪烁着二十几条未读消息，有人向你倾诉自己的迷茫，有人问你该怎么办。你看着那些陌生的头像，突然感到一种沉重的责任——你不仅写出了他们的痛苦，也点燃了他们微弱的希望。你关掉页面，坐在黑暗里，第一次意识到，你的文字可以成为别人的光，但你自己，却还在黑暗中摸索出路。",
     effects: { expression: 8, network: 8, selfDoubt: -8 },
+    type: "positive",
   },
   {
     id: "e36", title: "与导师关系恶化",
     description: "组会上，你对导师的方案提出了一个谨慎的质疑。会议室里的空气瞬间凝固，导师脸上的笑容像石膏一样僵住。他没有反驳你，只是点了点头，说'我们再研究研究'。但从那天起，他不再在微信上回复你的消息，组会上的眼神也总是跳过你。你发现，那些原本属于你的任务，开始悄悄流向同门的工位。你坐在实验室的角落，看着他们忙碌的背影，感觉自己像一个被遗忘的构件，从精心设计的结构中脱落，无声地滚落到黑暗的角落。",
     effects: { stress: -8, selfDoubt: 7, network: -4 },
+    type: "negative",
   },
   {
     id: "e37", title: "HR环节被卡学历背景",
     description: "你熬过了五轮笔试和业务面，最后一轮面试官甚至和你聊了半小时建筑与产品的哲学。当你以为终于要上岸时，HR的邮件像一盆冰水浇下来：'综合评估后，认为您的学术背景与该岗位目前的需求存在差距。'你盯着那行字，反复咀嚼每一个词——'学术背景'、'需求'、'差距'。你突然笑了，笑得有些凄凉，原来'建筑'两个字，在这句话里连出现的资格都没有，它被优雅地包裹在'学术背景'这个温柔的棺木里，埋葬了你所有的努力。你关掉邮箱，窗外的城市灯火辉煌，却没有一盏灯为你而亮。",
     effects: { selfDoubt: 12, ageAnxiety: 6 },
+    type: "negative",
   },
   {
     id: "e38", title: "外企学姐复盘",
     description: "咖啡厅里，学姐轻轻搅动着拿铁，目光锐利地看着你：'我知道你在想什么——你觉得那六年建筑学是浪费，是包袱。但你知道吗？在我眼里，那是你最锋利的武器。'她顿了顿，'问题是你还没学会怎么讲这个故事。'她的话像一把钥匙，突然打开了你心里某个锈死的锁。你看着窗外行色匆匆的人群，第一次意识到，也许你需要的不是抛弃过去，而是重新定义它。咖啡凉了，但你的手心却开始发热。",
     effects: { expression: 6, logic: 5, english: 4, network: 7, selfDoubt: -12 },
     condition: ({ stats }) => stats.english >= 45,
+    type: "positive",
   },
   {
     id: "e39", title: "错过暑期实习窗口",
     description: "你在实验室熬了整整一个暑假，改完了导师要的最后一版图纸。当你终于保存文件，揉着酸痛的脖子看向日历时，才发现已经错过了所有头部公司的暑期实习申请截止日期。你不死心，刷新招聘网站，却发现连最后的补录名额也变成了灰色。你重新打开那些曾经收藏的岗位链接，一个个'已结束'的标签像墓碑一样排列在屏幕上。你靠在椅背上，实验室的空调嗡嗡作响，你突然感觉这个夏天就像你的人生——你在埋头画图的时候，世界已经悄悄关上了所有的门。",
     effects: { arch: 8, logic: -5, selfDoubt: 8, ageAnxiety: 7 },
+    type: "negative",
   },
   {
     id: "e40", title: "课题组方向变更",
     description: "组会上，导师轻描淡写地宣布：'课题组的研究方向要调整，之前的工作暂时搁置。'你花了两个月时间收集的数据、写的代码、画的图表，在他一句话里变成了废纸。你抬起头，想说什么，却看见他平静的目光：'学术研究就是这样，要有归零的勇气。'你张了张嘴，最终只是点了一下头。散会后，你坐在空荡荡的实验室里，看着屏幕上那些再也用不上的文件，突然想起本科时老师说'建筑是百年大计'，现在你明白了，学术研究不是百年大计，而是一场随时可能被推倒重来的沙盘游戏，而你的青春，是其中最容易被抹去的沙粒。",
     effects: { arch: -5, stress: -15, selfDoubt: 10, ageAnxiety: 8 },
+    type: "negative",
   },
   {
     id: "e41", title: "收到第一个面试通知",
     description: "邮箱里终于弹出了一封面试通知，虽然只是一家名不见经传的小公司，但你的心跳还是漏了一拍。那天晚上，你久违地睡了一个好觉，没有梦见改图，没有梦见面试官质疑的脸。你梦见自己走进了一个明亮的办公室，里面的人都微笑着朝你点头，仿佛你本就属于那里。醒来时，天还没亮，你盯着天花板，第一次允许自己相信，也许这条漫长的隧道，终于能看到一点点光了，哪怕那光还很微弱，还很遥远。",
     effects: { selfDoubt: -8, expression: 4 },
+    type: "positive",
   },
   {
     id: "e42", title: "非CS转行分享会",
     description: "你走进那间拥挤的教室，看到座位上坐满了和你一样神情紧绷的脸——建筑系的、艺术系的、中文系的，你们像一群误入科技丛林的书生。当第一个分享者说'我也曾以为自己是异类'时，你听到周围有人轻轻吸气。那一刻，你突然意识到，原来孤独从来不是一个人的专利，它可以是一场集体的沉默。散会时，你们交换了联系方式，没有人说'加油'，但你们都知道，彼此的存在本身就是一种无声的支撑。走出教学楼，晚风很凉，但你感觉心里某个角落，悄悄升起了一丝温度。",
     effects: { network: 5, selfDoubt: -7, expression: 3 },
+    type: "positive",
   },
   {
     id: "e43", title: "宿舍同学轻描淡写",
     description: "室友推门进来，把腾讯的工牌随手扔在桌上，瘫在椅子上说：'产品其实挺好上手的，主要就是多想用户是谁。'说完他就戴上耳机，沉浸在了游戏的世界里。你盯着他的背影，那个曾经和你一起熬夜画图的少年，现在谈论'用户画像'就像谈论今天的天气一样自然。你突然想起，三年前你们还在一起争论柯布西耶和赖特谁更伟大，现在他已经在思考如何让十亿人更高效地刷短视频。你低下头，继续改你的简历，屏幕的光映在你脸上，像一场无声的告别——告别那个曾经以为建筑可以改变世界的自己。",
     effects: { selfDoubt: 5, logic: 3 },
+    type: "negative",
   },
   {
     id: "e44", title: "海归竞争加剧",
     description: "秋招季，你发现竞争者的名单里突然多了许多陌生的名字——他们毕业于常春藤，在硅谷实习过，LinkedIn主页上是流利的英文和光鲜的项目。更扎心的是，你收藏的岗位JD上，'海外背景优先'像一条无形的分界线，把你和他们隔开。你刷新着招聘网站，看着那些你连发音都读不准的学校名字，突然感到一种全球化的残酷：当你在熬夜改图的时候，他们正在加州阳光下讨论算法；当你终于鼓起勇气投简历的时候，他们已经成为HR眼中的'国际人才'。你关掉页面，窗外的城市依旧喧嚣，但你感觉自己的战场，正在被看不见的对手无限扩大。",
     effects: { selfDoubt: 6, ageAnxiety: 5 },
     condition: ({ isOverseas }) => isOverseas,
+    type: "negative",
   },
   // 以下为新增宣讲会/校招专属事件
   {
@@ -473,42 +518,49 @@ const EVENTS: GameEvent[] = [
     description: "宣讲会现场座无虚席，你挤在最后一排，听着HR讲述着数字化转型的宏大叙事。当提问环节开始时，你深吸一口气，举起了手：'请问，空间体验的数字化与建筑中的场所精神如何结合？'全场安静了一秒，HR的目光锁定在你身上，然后她笑了，从台上走下来，递给你一张内推卡：'你的角度很有意思，我们正需要这种跨界思维。'你接过那张薄薄的卡片，感觉它重如千斤——这是你第一次，在公开场合用建筑的语言，赢得了互联网世界的入场券。",
     effects: { expression: 6, selfDoubt: -5, network: 5 },
     condition: ({ semester }) => semester >= 3,
+    type: "positive",
   },
   {
     id: "e46", title: "校友企业交流日",
     description: "校友交流日上，你认出那位正在演讲的高管正是三年前毕业的直系学长。你鼓起勇气上前，递上你的电子简历。他快速浏览了一遍，突然抬起头，目光里带着惊讶：'你是建筑学院的？'你点点头，准备迎接那句熟悉的质疑。但他却笑了：'你的产品sense比很多CS学生还好，尤其是这种结构化思维——这很建筑。'那一刻，你感觉心里某个紧绷的弦突然松了。原来，那些你以为需要隐藏的过去，在懂行的人眼里，恰恰是你最独特的签名。",
     effects: { logic: 5, network: 8, selfDoubt: -10 },
     condition: ({ semester }) => semester >= 2,
+    type: "positive",
   },
   {
     id: "e47", title: "顶级外企Campus Day",
     description: "Campus Day的圆桌讨论上，周围是流利的英文和自信的发言。轮到你时，你深吸一口气，用英语讲述了建筑中的'形式追随功能'如何映射到系统设计中的'架构决定性能'。你看到面试官的眼神从审视变为专注，最后露出了赞赏的微笑。那一刻，你突然意识到，语言不是障碍，思维才是桥梁——你用了六年时间搭建的建筑思维，现在正帮你跨越文化的鸿沟。散会后，面试官主动递来名片：'你的视角很独特，希望以后能合作。'你握着那张名片，感觉它像一张通往新世界的船票。",
     effects: { english: 5, expression: 7, network: 6 },
     condition: ({ stats }) => stats.english >= 65,
+    type: "positive",
   },
   {
     id: "e48", title: "宣讲会群面踩坑",
     description: "宣讲会后的群面环节，你被随机分进了一个小组。讨论一开始，同组的人就像按下加速键一样疯狂抢话，抛出各种专业术语和模型名称。你张了张嘴，想分享建筑项目中的协作经验，但话到嘴边又咽了回去。四十分钟的群面，你只说了句'我同意'。回去的地铁上，你靠在冰冷的车厢壁上，感觉疲惫从骨头里渗出来。那不是身体的累，而是一种更深的无力——你花了六年学习如何设计空间，却在这一刻发现，你连设计自己的发言时机都不会。",
     effects: { selfDoubt: 8, stress: -5, ageAnxiety: 4 },
     condition: ({ semester }) => semester >= 4,
+    type: "negative",
   },
   {
     id: "e50", title: "校友内推",
     description: "微信突然弹出一条好友验证，是那位你在校友录上见过名字的师兄——他现在是某大厂的高管。通过验证后，他的第一句话是：'看到你在转行，需要内推吗？我可以直接帮你跳过筛选。'你盯着那行字，手指在键盘上悬停了很久。这原本是你梦寐以求的机会，但此刻涌上心头的，却是一种复杂的情绪——感激、压力、还有一丝不甘。你最终回复了'谢谢师兄'，然后看着聊天界面，突然意识到，人脉可以帮你打开一扇门，但走进那扇门后，你依然要靠自己站立。",
     effects: { network: 5, selfDoubt: -8, stress: 5 },
     condition: ({ stats }) => stats.network >= 60,
+    type: "positive",
   },
   {
     id: "e51", title: "行业交流会遇贵人",
     description: "沙龙休息间隙，你无意中与一位产品总监聊起了建筑中的'用户体验'——从动线设计到空间情绪。他越听越专注，最后干脆拉着你到角落，拿出手机：'你介意我现在就给你做一场模拟面试吗？你的思维太特别了，我想看看它在压力下如何发挥。'那一刻，你感觉整个会场的嘈杂都褪去了，只剩下你们两个人，和一个关于可能的对话。你点头说好，心里却想，这大概是你转行以来，第一次不是因为'建筑背景'被特殊对待，而是因为'建筑思维'被真正看见。",
     effects: { expression: 6, network: 8, selfDoubt: -5 },
     condition: ({ stats }) => stats.network >= 50 && stats.expression >= 55,
+    type: "positive",
   },
   {
     id: "e52", title: "人脉带来的兼职",
     description: "朋友把你推荐给一家初创公司做产品顾问，报酬微薄，但承诺'可以写在简历上'。第一次会议，你看着那些年轻的面孔，听着他们充满激情的产品构想，突然想起本科时和同学一起通宵做方案的日子。你提出的几个建议——关于用户动线、关于信息层次——让他们眼睛发亮。结束后，创始人握着你的手说：'你这种结构化的思维，是我们最需要的。'你走在回家的路上，晚风很凉，但心里却有一种久违的暖意。这份工作可能不会让你致富，但它让你相信，那些你以为已经死去的建筑技能，正在以另一种方式重生。",
     effects: { money: 8, network: 3, structured: 2 },
     condition: ({ stats }) => stats.network >= 4,
+    type: "positive",
   },
 ];
 
@@ -1506,6 +1558,11 @@ function StatBar({ statKey, value, delta }: { statKey: StatKey; value: number; d
   const meta = STAT_META[statKey];
   const showDelta = delta !== undefined && delta !== 0;
 
+  let warning = "";
+  if (statKey === 'stress' && value < 15) warning = "警告：精神防线即将崩溃！";
+  if (statKey === 'selfDoubt' && value > 85) warning = "警告：自我怀疑濒临极限！";
+  if (statKey === 'ageAnxiety' && value > 85) warning = "警告：年龄焦虑已达红线！";
+
   return (
     <div className="mb-2">
       <div className="flex justify-between items-center mb-0.5">
@@ -1532,6 +1589,12 @@ function StatBar({ statKey, value, delta }: { statKey: StatKey; value: number; d
           style={{ width: `${value}%`, background: meta.color, opacity: meta.positive ? 1 : 0.85 }}
         />
       </div>
+      {warning && (
+        <div className="flex items-start gap-1 mt-1 text-[10px] leading-tight text-red-400 animate-pulse">
+          <TriangleAlert size={10} className="shrink-0 mt-0.5" />
+          <span>{warning}</span>
+        </div>
+      )}
     </div>
   );
 }
@@ -1997,6 +2060,10 @@ export function GamePage() {
   // RENDER
   // ================================================================
 
+  // 确保从最新的 EVENTS 数组中获取当前事件对象（包含 type 属性）
+  // 解决 React 状态中可能存储了旧版事件对象导致 type 丢失的问题
+  const displayEvent = currentEvent ? EVENTS.find(e => e.id === currentEvent.id) || currentEvent : null;
+
   // 样式变量（偏建筑学术风·玻璃质感）
   const bg =
     "radial-gradient(circle at top left, rgba(201,168,76,0.16), transparent 55%), radial-gradient(circle at bottom right, rgba(63,131,248,0.12), transparent 55%), #050814";
@@ -2301,9 +2368,16 @@ export function GamePage() {
               角色档案
             </p>
             <p className="text-[14px] mb-0.5" style={{ color: textPrimary }}>{character.masterSchool}</p>
-            <p className="text-[12px] mb-2" style={{ color: textSecondary }}>
-              {character.isOverseas ? "海外留学" : TIER_LABELS[character.masterTier]}
-            </p>
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <span className="text-[12px]" style={{ color: textSecondary }}>
+                {character.isOverseas ? "海外留学" : TIER_LABELS[character.masterTier]}
+              </span>
+              {character.isOverseas && (
+              <span className="inline-block text-[10px] px-1.5 py-0.5 rounded leading-none" style={{ background: "#4a9eff15", color: accent, border: `1px solid ${border}` }}>
+                🌏 海归
+              </span>
+            )}
+            </div>
             {mentor && (
               <div className="py-2 mb-4 pb-4" style={{ borderBottom: `1px solid ${border}` }}>
                 <div className="flex items-center gap-3 mb-3">
@@ -2335,14 +2409,16 @@ export function GamePage() {
                       }}
                     />
                   </div>
+                  {stats.mentorFavorability < 15 && (
+                    <div className="flex items-start gap-1 mt-2 text-[11px] leading-tight text-red-400 animate-pulse">
+                      <TriangleAlert size={12} className="shrink-0 mt-0.5" />
+                      <span>警告：导师耐心即将耗尽！</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-            {character.isOverseas && (
-              <span className="inline-block text-[11px] px-2 py-0.5 rounded mt-1" style={{ background: "#4a9eff15", color: accent, border: `1px solid ${border}` }}>
-                🌏 海归背景
-              </span>
-            )}</div>
+          </div>
 
           {/* 进度 */}
           <div className="mb-5 pb-5" style={{ borderBottom: `1px solid ${border}` }}>
@@ -2470,32 +2546,45 @@ export function GamePage() {
           )}
 
           {/* ── 事件卡片 ── */}
-          {(phase === "event_view" || (phase === "action_choice" && currentEvent)) && currentEvent && phase === "event_view" && (
+          {(phase === "event_view" || (phase === "action_choice" && displayEvent)) && displayEvent && phase === "event_view" && (
             <div
               className="rounded-2xl p-6 mb-6"
-              style={{ background: "rgba(239,83,80,0.05)", border: "1px solid rgba(239,83,80,0.2)" }}
+              style={{
+                background: displayEvent.type === "positive" ? "rgba(74,222,128,0.05)" : "rgba(239,83,80,0.05)",
+                border: displayEvent.type === "positive" ? "1px solid rgba(74,222,128,0.2)" : "1px solid rgba(239,83,80,0.2)"
+              }}
             >
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-[12px] tracking-widest uppercase px-2 py-1 rounded" style={{ color: "#ef5350", background: "rgba(239,83,80,0.1)" }}>
+                <span
+                  className="text-[12px] tracking-widest uppercase px-2 py-1 rounded"
+                  style={{
+                    color: displayEvent.type === "positive" ? "#4ade80" : "#ef5350",
+                    background: displayEvent.type === "positive" ? "rgba(74,222,128,0.1)" : "rgba(239,83,80,0.1)"
+                  }}
+                >
                   随机事件
                 </span>
               </div>
               <h3 className="text-[18px] mb-3" style={{ color: textPrimary, fontFamily: "'Noto Serif SC', serif" }}>
-                {currentEvent.title}
+                {displayEvent.title}
               </h3>
               <p className="text-[15px] leading-relaxed mb-5" style={{ color: "rgba(200,220,255,0.7)" }}>
-                {currentEvent.description}
+                {displayEvent.description}
               </p>
               {/* 效果预览 */}
               <div className="flex flex-wrap gap-1.5 mb-5">
-                {(Object.keys(currentEvent.effects) as StatKey[]).map((k) => (
-                  <DeltaBadge key={k} statKey={k} value={currentEvent.effects[k]!} />
+                {(Object.keys(displayEvent.effects) as StatKey[]).map((k) => (
+                  <DeltaBadge key={k} statKey={k} value={displayEvent.effects[k]!} />
                 ))}
               </div>
               <button
                 onClick={acknowledgeEvent}
                 className="px-5 py-2.5 rounded-xl text-[14px] transition-all hover:opacity-90"
-                style={{ background: "rgba(239,83,80,0.15)", color: "#ef5350", border: "1px solid rgba(239,83,80,0.25)" }}
+                style={{
+                  background: displayEvent.type === "positive" ? "rgba(74,222,128,0.15)" : "rgba(239,83,80,0.15)",
+                  color: displayEvent.type === "positive" ? "#4ade80" : "#ef5350",
+                  border: displayEvent.type === "positive" ? "1px solid rgba(74,222,128,0.25)" : "1px solid rgba(239,83,80,0.25)"
+                }}
               >
                 知道了，继续 →
               </button>
@@ -2503,14 +2592,25 @@ export function GamePage() {
           )}
 
           {/* ── 已发生事件提醒（action_choice阶段显示） ── */}
-          {phase === "action_choice" && currentEvent && (
+          {phase === "action_choice" && displayEvent && (
             <div
               className="rounded-xl px-4 py-3 mb-4 flex items-start gap-2"
-              style={{ background: "rgba(239,83,80,0.05)", border: "1px solid rgba(239,83,80,0.12)" }}
+              style={{
+                background: displayEvent.type === "positive" ? "rgba(74,222,128,0.05)" : "rgba(239,83,80,0.05)",
+                border: displayEvent.type === "positive" ? "1px solid rgba(74,222,128,0.12)" : "1px solid rgba(239,83,80,0.12)"
+              }}
             >
-              <span className="text-[12px] px-1.5 py-0.5 rounded mt-0.5 shrink-0" style={{ background: "rgba(239,83,80,0.1)", color: "#ef5350" }}>事件</span>
-              <p className="text-[14px]" style={{ color: "rgba(239,83,80,0.8)" }}>
-                《{currentEvent.title}》已发生，属性已更新。现在选择本回合行动。
+              <span
+                className="text-[12px] px-1.5 py-0.5 rounded mt-0.5 shrink-0"
+                style={{
+                  background: displayEvent.type === "positive" ? "rgba(74,222,128,0.1)" : "rgba(239,83,80,0.1)",
+                  color: displayEvent.type === "positive" ? "#4ade80" : "#ef5350"
+                }}
+              >
+                事件
+              </span>
+              <p className="text-[14px]" style={{ color: displayEvent.type === "positive" ? "rgba(74,222,128,0.8)" : "rgba(239,83,80,0.8)" }}>
+                《{displayEvent.title}》已发生，属性已更新。现在选择本回合行动。
               </p>
             </div>
           )}
@@ -2995,6 +3095,16 @@ export function GamePage() {
           >
             <RefreshCw size={14} /> 重新开始，写另一个故事
           </button>
+
+          <a
+            href="https://v.wjx.cn/vm/OMZxZN6.aspx#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full mt-4 py-3 rounded-xl text-[14px] transition-all hover:opacity-80 flex items-center justify-center gap-2"
+            style={{ background: "transparent", color: textSecondary, border: `1px dashed ${textSecondary}` }}
+          >
+            📝 填写反馈问卷，帮助我们优化游戏
+          </a>
         </div>
       </div>
     );
