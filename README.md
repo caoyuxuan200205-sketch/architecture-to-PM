@@ -1,6 +1,7 @@
 
   # 近代建筑史研究App (Modern Architecture History Research Game)
 
+
 这是一个基于 React + Vite 开发的文字养成类游戏，模拟了建筑学研究生的三年求职生涯。
 
 ## 🎮 游戏特色
