@@ -1826,11 +1826,21 @@ export function GamePage() {
         try {
           console.log("Supabase: 开始提交数据...", { endingTitle: ending.title });
           
-          // 1. 提交当前结果
-          const { data: insertData, error: insertError } = await supabase.from('game_results').insert({
+          // 1. 提交当前结果 (包含详细的玩家画像和游戏数据)
+          const payload = {
              ending_title: ending.title,
              offer_name: selectedOfferId ? (receivedOffers?.find(c => c.id === selectedOfferId)?.name || null) : null,
-          }).select();
+             // 新增字段：玩家画像
+             character_tier: character ? TIER_LABELS[character.undergradTier] : null,
+             undergrad_school: character?.undergradSchool || null,
+             is_overseas: character?.isOverseas || false,
+             mentor_name: mentor?.name || null,
+             // 新增字段：游戏数据
+             final_stats: stats,
+             internship_count: pastInternships.length
+          };
+
+          const { data: insertData, error: insertError } = await supabase.from('game_results').insert(payload).select();
           
           if (insertError) {
              console.error('Supabase: 提交失败', insertError);
@@ -1870,7 +1880,7 @@ export function GamePage() {
       };
       submitAndFetch();
     }
-  }, [phase, ending, hasSubmittedResult, selectedOfferId, receivedOffers]);
+  }, [phase, ending, hasSubmittedResult, selectedOfferId, receivedOffers, character, mentor, stats, pastInternships]);
 
   // 开始游戏：生成角色
   const startGame = useCallback(() => {
