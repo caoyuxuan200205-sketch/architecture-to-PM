@@ -1824,21 +1824,29 @@ export function GamePage() {
       setHasSubmittedResult(true);
       const submitAndFetch = async () => {
         try {
+          console.log("Supabase: 开始提交数据...", { endingTitle: ending.title });
+          
           // 1. 提交当前结果
-          const { error: insertError } = await supabase.from('game_results').insert({
+          const { data: insertData, error: insertError } = await supabase.from('game_results').insert({
              ending_title: ending.title,
              offer_name: selectedOfferId ? (receivedOffers?.find(c => c.id === selectedOfferId)?.name || null) : null,
-          });
+          }).select();
           
           if (insertError) {
-             console.error('Failed to submit result:', insertError);
+             console.error('Supabase: 提交失败', insertError);
+          } else {
+             console.log('Supabase: 提交成功', insertData);
           }
 
           // 2. 获取统计数据
+          console.log("Supabase: 开始获取统计...");
+          
           // 获取总游玩次数
           const { count: totalCount, error: countError } = await supabase
             .from('game_results')
             .select('*', { count: 'exact', head: true });
+
+          if (countError) console.error("Supabase: 获取总数失败", countError);
 
           // 获取达成同结局的次数
           const { count: sameEndingCount, error: sameEndingError } = await supabase
@@ -1846,7 +1854,10 @@ export function GamePage() {
             .select('*', { count: 'exact', head: true })
             .eq('ending_title', ending.title);
 
+          if (sameEndingError) console.error("Supabase: 获取同结局失败", sameEndingError);
+
           if (!countError && !sameEndingError) {
+            console.log("Supabase: 统计获取成功", { total: totalCount, same: sameEndingCount });
             setGlobalEndingStats({
               total: totalCount || 0,
               sameEndingCount: sameEndingCount || 0
@@ -1854,7 +1865,7 @@ export function GamePage() {
           }
 
         } catch (err) {
-          console.error('Error in stats:', err);
+          console.error('Supabase: 未知错误', err);
         }
       };
       submitAndFetch();
