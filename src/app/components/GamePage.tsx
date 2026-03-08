@@ -1826,16 +1826,42 @@ export function GamePage() {
         try {
           console.log("Supabase: 开始提交数据...", { endingTitle: ending.title });
           
+          // 0. 尝试获取用户地理位置 (不弹窗，基于IP)
+          let locationData = { city: null, region: null, country: null };
+          try {
+            // 使用 ipapi.co 获取城市级定位
+            const res = await fetch('https://ipapi.co/json/');
+            if (res.ok) {
+              const data = await res.json();
+              locationData = {
+                city: data.city || null,
+                region: data.region || null,
+                country: data.country_name || null
+              };
+              console.log("位置获取成功:", locationData);
+            }
+          } catch (e) {
+            console.warn('获取地理位置失败 (可能是网络拦截):', e);
+          }
+
           // 1. 提交当前结果 (包含详细的玩家画像和游戏数据)
           const payload = {
              ending_title: ending.title,
              offer_name: selectedOfferId ? (receivedOffers?.find(c => c.id === selectedOfferId)?.name || null) : null,
-             // 新增字段：玩家画像
+             
+             // 玩家画像 - 详细学历
              character_tier: character ? TIER_LABELS[character.undergradTier] : null,
-             undergrad_school: character?.undergradSchool || null,
+             undergrad_school: character?.undergradSchool || null, // 本科具体学校
+             master_school: character?.masterSchool || null,       // 研究生具体学校 (新增)
              is_overseas: character?.isOverseas || false,
              mentor_name: mentor?.name || null,
-             // 新增字段：游戏数据
+
+             // 玩家画像 - 地理位置 (新增)
+             city: locationData.city,
+             region: locationData.region,
+             country: locationData.country,
+
+             // 游戏数据
              final_stats: stats,
              internship_count: pastInternships.length
           };
