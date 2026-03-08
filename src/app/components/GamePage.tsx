@@ -1,5 +1,6 @@
-import { useState, useCallback, type CSSProperties } from "react";
+import { useState, useCallback, useEffect, type CSSProperties } from "react";
 import { RefreshCw, ChevronRight, Zap, TrendingUp, TrendingDown, BookOpen, TriangleAlert } from "lucide-react";
+import { supabase } from "../../lib/supabase";
 
 // ================================================================
 // SECTION 1: 数据层（所有数组，方便后续扩展）
@@ -1813,6 +1814,53 @@ export function GamePage() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [receivedOffers, setReceivedOffers] = useState<Company[] | null>(null);
 
+  // Supabase 统计状态
+  const [globalEndingStats, setGlobalEndingStats] = useState<{ total: number; sameEndingCount: number } | null>(null);
+  const [hasSubmittedResult, setHasSubmittedResult] = useState(false);
+
+  // 监听结局状态，提交数据并获取统计
+  useEffect(() => {
+    if (phase === "ending" && ending && !hasSubmittedResult) {
+      setHasSubmittedResult(true);
+      const submitAndFetch = async () => {
+        try {
+          // 1. 提交当前结果
+          const { error: insertError } = await supabase.from('game_results').insert({
+             ending_title: ending.title,
+             offer_name: selectedOfferId ? (receivedOffers?.find(c => c.id === selectedOfferId)?.name || null) : null,
+          });
+          
+          if (insertError) {
+             console.error('Failed to submit result:', insertError);
+          }
+
+          // 2. 获取统计数据
+          // 获取总游玩次数
+          const { count: totalCount, error: countError } = await supabase
+            .from('game_results')
+            .select('*', { count: 'exact', head: true });
+
+          // 获取达成同结局的次数
+          const { count: sameEndingCount, error: sameEndingError } = await supabase
+            .from('game_results')
+            .select('*', { count: 'exact', head: true })
+            .eq('ending_title', ending.title);
+
+          if (!countError && !sameEndingError) {
+            setGlobalEndingStats({
+              total: totalCount || 0,
+              sameEndingCount: sameEndingCount || 0
+            });
+          }
+
+        } catch (err) {
+          console.error('Error in stats:', err);
+        }
+      };
+      submitAndFetch();
+    }
+  }, [phase, ending, hasSubmittedResult, selectedOfferId, receivedOffers]);
+
   // 开始游戏：生成角色
   const startGame = useCallback(() => {
     const { character: c, stats: s } = generateCharacter();
@@ -2047,6 +2095,8 @@ export function GamePage() {
     setReceivedOffers(null);
     setActiveCampusEvent(null);
     setCampusEventResult(null);
+    setGlobalEndingStats(null);
+    setHasSubmittedResult(false);
   }, []);
 
   // ── 渲染：进度显示
@@ -3005,6 +3055,14 @@ export function GamePage() {
                 </p>
               ))}
             </div>
+
+            {/* 全服统计 */}
+            {globalEndingStats && globalEndingStats.total > 0 && (
+               <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-[12px]" style={{ color: textSecondary }}>
+                 <span>全服达成次数：{globalEndingStats.sameEndingCount}</span>
+                 <span>全服占比：{((globalEndingStats.sameEndingCount / globalEndingStats.total) * 100).toFixed(1)}%</span>
+               </div>
+            )}
           </div>
 
           {/* ── 生涯履历（整合了属性、教育、实习） ── */}
