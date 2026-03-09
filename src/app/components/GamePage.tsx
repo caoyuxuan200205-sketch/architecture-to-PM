@@ -513,6 +513,66 @@ const EVENTS: GameEvent[] = [
     condition: ({ isOverseas }) => isOverseas,
     type: "negative",
   },
+  {
+    id: "e53", title: "改图改到第 18 版被打回",
+    description: "你抱着咖啡罐在 CAD 前熬了七个通宵，从轴线到材质改了 18 版，连快捷键都快磨秃了键盘。把文件发给导师后，等了三个小时收到回复：“还是第一版有感觉，你这几天有点画歪了。” 你点开第一版文件，发现和最终版的区别不过是窗洞偏移了 50mm—— 那是你为了 “优化” 熬夜改掉的第一个细节。窗外天又亮了，你突然觉得，这几天的睡眠和咖啡，都像 CAD 里被删掉的辅助线，毫无意义。",
+    effects: { stress: -10, selfDoubt: 8, arch: 2 },
+    type: "negative",
+  },
+  {
+    id: "e54", title: "设计院实习月薪 800并要求通宵",
+    description: "入职前 HR 说 “建筑行业看重积累”，你没多想就签了实习协议，直到发薪日看到银行卡里 800 块才懵了 —— 连合租的房租都不够。更离谱的是，总工下班前甩来一套施工图：“今晚必须画完，明早甲方要审图。” 你在空无一人的办公室泡了三桶泡面，凌晨五点提交文件时，发现打卡记录显示你已经连续工作 16 小时。同事路过你的工位，扔给你一瓶功能饮料：“习惯就好，我们都是这么过来的。” 你握着那瓶饮料，突然明白 “积累” 原来是用廉价劳动力换经验。",
+    effects: { money: -5, stress: -10, ageAnxiety: 5 },
+    type: "negative",
+  },
+  {
+    id: "e55", title: "租房被中介坑",
+    description: "为了离设计院近，你通过中介租了个老破小，签合同时中介拍着胸脯说 “退房当天退押金”。三个月后你要搬走，中介上门检查时突然指着墙面：“这有两处污渍，得扣 500；地板有划痕，扣 300；窗帘有点脏，扣 200。” 你争辩说污渍是原有的、划痕是家具摩擦的，他却掏出合同：“你自己看条款，‘房屋损耗均由租客承担’。” 最后 1000 块押金一分没拿回来，你站在路边看着中介的车消失，想起搬进来时他热情帮你提行李的样子，只觉得讽刺 —— 原来那些殷勤，都是为了最后一次 “收割”。",
+    effects: { money: -10, stress: -5, selfDoubt: 3 },
+    type: "negative",
+  },
+  {
+    id: "e56", title: "吃到了学妹保研的瓜",
+    description: "深夜，本科的建筑系群里炸开了锅，有人匿名爆料：某同学为了保研，私下跟老师发生了不正当关系，还让院长修改了当年的保研加分细则，将另一位高分同学的竞赛获奖全部剔除在列。聊天记录里的截图、录音，把 “学术公平” 撕得稀碎。你看着屏幕，突然想起自己当年保研时，花尽心思算别人的成绩和加分，为了一篇论文熬了无数个夜，而有人却用捷径轻松拿到了入场券。群里的讨论越来越激烈，有人愤怒，有人沉默，你关掉手机，躺在床上翻来覆去 —— 原来从升学开始，建筑行业的 “卷” 就带着不为人知的勾心斗角，而你，也是这场博弈里幸存的普通人。",
+    effects: { selfDoubt: 5, ageAnxiety: 3, stress: -3 },
+    type: "negative",
+  },
+  {
+    id: "e57", title: "论文被《建筑学报》录用",
+    description: "你随手投给《建筑学报》的课程论文，在你已经背完半本产品经理面试题库时，收到了录用通知。邮件里编辑的评语写着 “研究视角新颖，兼具理论与实践价值”，导师也特意找你：“这篇论文能帮你申请博士，或者进设计院核心研发岗。” 你翻开那篇论文，里面的每一个公式、每一张分析图，都是你当年在图书馆泡了两个月的成果。转行的焦虑还在，但手里的录用通知像一块磁石 —— 你突然犹豫了，那些改图的深夜、查资料的清晨，难道真的要因为 “行业下行” 就放弃？建筑生的执念，在这一刻突然翻涌上来。",
+    effects: { arch: 10, selfDoubt: -5, stress: 5, ageAnxiety: -3 },
+    type: "positive",
+  },
+  {
+    id: "e58", title: "设计院Mentor 让转回工资",
+    description: "你的月薪只有1000，但发薪日你收到银行到账提醒，3000 块的金额让你以为财务发错了。刚想询问，mentor 私下找你：“这是给你的补贴，你转 1000 回我微信。” 见你愣住，他补充道：“公司账上只能按 1000 发，多的 2000 走私下，你我都划算 —— 不然扣完税，你到手也没多少。” 你看着聊天记录里的 “划算”，突然明白这是行业里默认的 “避税操作”。转完钱后，你看着银行卡里的 2000 块，心里五味杂陈：既庆幸多了一笔收入，又觉得这种 “暗箱操作”，像一根细小的刺，扎在 “职场正规” 的认知里。",
+    effects: { money: 10, stress: -3, selfDoubt: 3 },
+    type: "negative",
+  },
+  {
+    id: "e59", title: "设计课老师离谱安排",
+    description: "选课的时候你以为研究生“建筑设计” 是门轻松的课，没想到老师的时间安排离谱到让人崩溃：整个学期 16 周，老师除了第一节课讲了下课题，其余时间便不见了踪影，你和同学天天摸鱼，以为这门课就这么混过去了。寒假回家的前一天，老师突然发通知：“课题需要深化，所有人留在学校加班，正月十五前提交最终方案。” 你看着车票退改界面的手续费，想起父母已经备好的年夜饭，委屈又无奈。更气的是，留校期间老师全程不在校，只偶尔在群里发一句 “进度加快”—— 原来所谓的 “课程任务”，不过是他用来完成自己项目的免费劳动力。",
+    effects: { stress: -12, arch: -2, money: -3 },
+    type: "negative",
+  },
+  {
+    id: "e60", title: "OR 系统抄往届图",
+    description: "设计课 deadline 只剩两天，你实在没灵感，抱着侥幸心理登上学校的 OR 系统，下载了一套五年前的往届优秀图纸，改了改方案名称和局部细节就提交了。答辩时你紧张得手心冒汗，生怕被老师发现。没想到评委老师频频点头，主评老师说：“这个方案的空间逻辑和节点设计很成熟，比同期同学的作品更有落地性。” 最终你拿到了课程最高分，同学还来问你 “灵感来源”。你握着成绩单，又惊又喜 —— 原来往届前辈的智慧，居然成了你的 “救命稻草”，而这场 “意外的成功”，也让你对 “设计创新” 有了更复杂的理解。",
+    effects: { arch: 5, logic: 3, stress: 5, selfDoubt: -3 },
+    type: "positive",
+  },
+  {
+    id: "e61", title: "研究建筑师转行的论文被《建筑师》录用，风向变了",
+    description: "你花了半年时间调研 200 位建筑师转行案例，熬夜整理数据、分析转行路径，写下的《行业转型背景下建筑师跨领域就业现状与发展研究》，本是课程论文的延伸，没想到真的收到了《建筑学报》的录用通知。邮件里编辑特意备注：“你的研究填补了行业空白，现在转行不再是‘异类选择’，而是值得关注的行业趋势。” 导师看到通知后，一改之前 “转行就是浪费专业” 的态度，主动说：“这个方向有价值，我帮你联系行业论坛分享。” 你翻着论文里那些转行前辈的故事，突然觉得自己的坚持有了意义 —— 曾经被质疑 “不务正业” 的研究，如今成了被核心期刊认可的议题，建筑生转行的风，终于吹向了被理解、被正视的方向，所有的熬夜和调研，都成了最值得的铺垫。",
+    effects: { arch: 8, selfDoubt: -10, network: 5 },
+    type: "positive",
+  },
+  {
+    id: "e62", title: "那艺娜演唱会，我是个坚强的笨女人",
+    description: "抢了半个月的票，终于站在那艺娜演唱会的现场。当熟悉的旋律响起，她唱到 “我是个坚强的笨女人，我是个勇敢的笨女人” 时，舞台灯光照亮全场，你突然红了眼眶。这阵子改图改到崩溃、投简历石沉大海、转行被质疑 “不切实际” 的委屈，在歌词里找到了共鸣。你跟着全场一起合唱，声音哽咽却越来越响亮，那些自我怀疑、年龄焦虑，仿佛都被歌声吹散。散场时，你握着荧光棒走在人群里，晚风拂过脸颊，突然觉得 “笨一点也没关系”—— 就像歌词里唱的，只要够坚强，哪怕走得慢，也能走到想去的地方。回到宿舍，你打开电脑重新修改简历，这一次，指尖没有犹豫，眼里全是笃定。",
+    effects: { stress: -10, selfDoubt: -8, ageAnxiety: -5 },
+    type: "positive",
+  },
   // 以下为新增宣讲会/校招专属事件
   {
     id: "e45", title: "大厂提前批宣讲会",
@@ -1819,6 +1879,77 @@ export function GamePage() {
   const [globalEndingStats, setGlobalEndingStats] = useState<{ total: number; sameEndingCount: number } | null>(null);
   const [hasSubmittedResult, setHasSubmittedResult] = useState(false);
 
+  // ── 存档/读档逻辑 ──
+  const STORAGE_KEY = "archGameSave_v1";
+
+  // 自动保存
+  useEffect(() => {
+    // 只有在非 intro 阶段才保存，避免覆盖存档为初始状态
+    if (phase === "intro") return;
+
+    const gameState = {
+      phase, character, stats, mentor, semester, round,
+      currentEvent, activeCampusEvent, campusEventResult,
+      seenEventIds: Array.from(seenEventIds),
+      seenCampusIds: Array.from(seenCampusIds),
+      chosenAction, actionDelta, eventDelta, ending,
+      actionNarrative, selectedOfferId, selectedInternshipId,
+      showTutorial, tutorialStep,
+      pastInternships, currentOfferedInternships, offerBuffs,
+      isResumeOpen, receivedOffers,
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+  }, [
+    phase, character, stats, mentor, semester, round,
+    currentEvent, activeCampusEvent, campusEventResult,
+    seenEventIds, seenCampusIds,
+    chosenAction, actionDelta, eventDelta, ending,
+    actionNarrative, selectedOfferId, selectedInternshipId,
+    showTutorial, tutorialStep,
+    pastInternships, currentOfferedInternships, offerBuffs,
+    isResumeOpen, receivedOffers
+  ]);
+
+  // 初始加载
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        if (data.phase && data.phase !== "intro") {
+          setPhase(data.phase);
+          if (data.character) setCharacter(data.character);
+          if (data.stats) setStats(data.stats);
+          if (data.mentor) setMentor(data.mentor);
+          if (data.semester) setSemester(data.semester);
+          if (data.round) setRound(data.round);
+          if (data.currentEvent) setCurrentEvent(data.currentEvent);
+          if (data.activeCampusEvent) setActiveCampusEvent(data.activeCampusEvent);
+          if (data.campusEventResult) setCampusEventResult(data.campusEventResult);
+          if (data.seenEventIds) setSeenEventIds(new Set(data.seenEventIds));
+          if (data.seenCampusIds) setSeenCampusIds(new Set(data.seenCampusIds));
+          if (data.chosenAction) setChosenAction(data.chosenAction);
+          if (data.actionDelta) setActionDelta(data.actionDelta);
+          if (data.eventDelta) setEventDelta(data.eventDelta);
+          if (data.ending) setEnding(data.ending);
+          if (data.actionNarrative) setActionNarrative(data.actionNarrative);
+          if (data.selectedOfferId) setSelectedOfferId(data.selectedOfferId);
+          if (data.selectedInternshipId) setSelectedInternshipId(data.selectedInternshipId);
+          if (data.showTutorial !== undefined) setShowTutorial(data.showTutorial);
+          if (data.tutorialStep !== undefined) setTutorialStep(data.tutorialStep);
+          if (data.pastInternships) setPastInternships(data.pastInternships);
+          if (data.currentOfferedInternships) setCurrentOfferedInternships(data.currentOfferedInternships);
+          if (data.offerBuffs) setOfferBuffs(data.offerBuffs);
+          if (data.isResumeOpen !== undefined) setIsResumeOpen(data.isResumeOpen);
+          if (data.receivedOffers) setReceivedOffers(data.receivedOffers);
+        }
+      } catch (e) {
+        console.error("Failed to load save game", e);
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    }
+  }, []);
+
   // 监听结局状态，提交数据并获取统计
   useEffect(() => {
     if (phase === "ending" && ending && !hasSubmittedResult) {
@@ -2125,6 +2256,7 @@ export function GamePage() {
 
   // 重新开始
   const resetGame = useCallback(() => {
+    localStorage.removeItem(STORAGE_KEY);
     setPhase("intro");
     setCharacter(null);
     setStats(null);
@@ -2228,9 +2360,10 @@ export function GamePage() {
           >
             开始游戏 →
           </button>
-          <p className="text-[12px] mt-4" style={{ color: "rgba(180,200,240,0.3)" }}>
-            本游戏纯属虚构，如有雷同，那可真是太巧了。
-          </p>
+          <div className="flex flex-col items-center gap-1.5 mt-4 text-[12px]" style={{ color: "rgba(180,200,240,0.3)" }}>
+             <p>建议使用电脑端浏览器体验以获得最佳效果</p>
+             <p>本游戏纯属虚构，如有雷同，那可真是太巧了。</p>
+          </div>
         </div>
       </div>
     );
