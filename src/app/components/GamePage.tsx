@@ -1806,6 +1806,7 @@ export function GamePage() {
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
   const [selectedInternshipId, setSelectedInternshipId] = useState<string | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
 
   // 新增状态
   const [pastInternships, setPastInternships] = useState<InternshipOption[]>([]);
@@ -2144,6 +2145,7 @@ export function GamePage() {
     setCampusEventResult(null);
     setGlobalEndingStats(null);
     setHasSubmittedResult(false);
+    setTutorialStep(0);
   }, []);
 
   // ── 渲染：进度显示
@@ -2396,60 +2398,127 @@ export function GamePage() {
         {showTutorial && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center px-6" style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)" }}>
             <div className="max-w-md w-full rounded-2xl p-8 relative" style={{ background: card, border: `1px solid ${accent}` }}>
-              <div className="text-center mb-6">
-                <p className="text-[12px] tracking-widest uppercase mb-2" style={{ color: accent }}>
-                  GUIDE
-                </p>
-                <h3 className="text-2xl font-bold text-white" style={{ fontFamily: "'Noto Serif SC', serif" }}>
-                  关注你的核心数值
-                </h3>
-              </div>
               
-              <div className="space-y-6 mb-8">
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(74,158,255,0.1)", color: "#4a9eff" }}>
-                    <TrendingUp size={20} />
-                  </div>
-                  <div>
-                    <h4 className="text-[16px] font-bold text-white mb-1">左侧属性面板</h4>
-                    <p className="text-[14px]" style={{ color: textSecondary }}>
-                      逻辑、表达、英语等属性直接决定你能拿到什么等级的 Offer。请根据目标尽早规划加点。
+              {/* Step 0: 左侧属性 */}
+              {tutorialStep === 0 && (
+                <>
+                  <div className="text-center mb-6">
+                    <p className="text-[12px] tracking-widest uppercase mb-2" style={{ color: accent }}>
+                      GUIDE 1/3
                     </p>
+                    <h3 className="text-2xl font-bold text-white" style={{ fontFamily: "'Noto Serif SC', serif" }}>
+                      关注你的核心数值
+                    </h3>
                   </div>
-                </div>
+                  
+                  <div className="space-y-6 mb-8">
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(74,158,255,0.1)", color: "#4a9eff" }}>
+                        <TrendingUp size={20} />
+                      </div>
+                      <div>
+                        <h4 className="text-[16px] font-bold text-white mb-1">左侧属性面板</h4>
+                        <p className="text-[14px]" style={{ color: textSecondary }}>
+                          逻辑、表达、英语等属性直接决定你能拿到什么等级的 Offer。请根据目标尽早规划加点。
+                        </p>
+                      </div>
+                    </div>
 
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(239,83,80,0.1)", color: "#ef5350" }}>
-                    <Zap size={20} />
-                  </div>
-                  <div>
-                    <h4 className="text-[16px] font-bold text-white mb-1">压力与焦虑</h4>
-                    <p className="text-[14px]" style={{ color: textSecondary }}>
-                      压力过大会导致崩溃，焦虑过高会触发转行结局。请适时选择“摆烂”或“运动”来调整状态。
-                    </p>
-                  </div>
-                </div>
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(239,83,80,0.1)", color: "#ef5350" }}>
+                        <Zap size={20} />
+                      </div>
+                      <div>
+                        <h4 className="text-[16px] font-bold text-white mb-1">压力与焦虑</h4>
+                        <p className="text-[14px]" style={{ color: textSecondary }}>
+                          压力过大会导致崩溃，焦虑过高会触发转行结局。请适时选择“摆烂”或“运动”来调整状态。
+                        </p>
+                      </div>
+                    </div>
 
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(201,168,76,0.1)", color: accent }}>
-                    <BookOpen size={20} />
+                    <div className="flex gap-4">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(201,168,76,0.1)", color: accent }}>
+                        <BookOpen size={20} />
+                      </div>
+                      <div>
+                        <h4 className="text-[16px] font-bold text-white mb-1">导师好感度</h4>
+                        <p className="text-[14px]" style={{ color: textSecondary }}>
+                          千万别惹导师生气！好感度过低（&lt;0）会直接导致退学结局。送礼或完成课题可挽回。
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-[16px] font-bold text-white mb-1">导师好感度</h4>
-                    <p className="text-[14px]" style={{ color: textSecondary }}>
-                      千万别惹导师生气！好感度过低（&lt;0）会直接导致退学结局。送礼或完成课题可挽回。
+                </>
+              )}
+
+              {/* Step 1: 中间行动 */}
+              {tutorialStep === 1 && (
+                <>
+                  <div className="text-center mb-6">
+                    <p className="text-[12px] tracking-widest uppercase mb-2" style={{ color: accent }}>
+                      GUIDE 2/3
                     </p>
+                    <h3 className="text-2xl font-bold text-white" style={{ fontFamily: "'Noto Serif SC', serif" }}>
+                      每回合一次行动
+                    </h3>
                   </div>
-                </div>
+                  <div className="space-y-6 mb-8 px-2">
+                     <p className="text-[15px] leading-relaxed text-center" style={{ color: textSecondary }}>
+                       中间区域是你的行动面板。你可以选择【改图】、【学产品】、【投实习】等行动。<br/><br/>
+                       有些行动会消耗金钱，有些会增加压力。请根据你的目标（互联网/外企/深造）来平衡你的每一周。
+                     </p>
+                     <div className="p-4 rounded-xl text-center text-[13px]" style={{ background: "rgba(255,255,255,0.05)" }}>
+                        💡 提示：偶尔会出现“随机事件”和“校园招聘”，那是改变命运的机会，不要错过！
+                     </div>
+                  </div>
+                </>
+              )}
+
+              {/* Step 2: 右侧简历 */}
+              {tutorialStep === 2 && (
+                <>
+                  <div className="text-center mb-6">
+                    <p className="text-[12px] tracking-widest uppercase mb-2" style={{ color: accent }}>
+                      GUIDE 3/3
+                    </p>
+                    <h3 className="text-2xl font-bold text-white" style={{ fontFamily: "'Noto Serif SC', serif" }}>
+                      丰富你的简历
+                    </h3>
+                  </div>
+                  <div className="space-y-6 mb-8 px-2">
+                     <p className="text-[15px] leading-relaxed text-center" style={{ color: textSecondary }}>
+                       右侧面板展示了你的【教育背景】和【实习经历】。<br/><br/>
+                       当你成功完成实习或特殊事件时，简历会自动更新。一份漂亮的简历是你拿到大厂 Offer 的敲门砖。
+                     </p>
+                     <div className="p-4 rounded-xl text-center text-[13px]" style={{ background: "rgba(255,255,255,0.05)" }}>
+                        📄 你的目标：在24个回合结束前，打造一份完美的简历。
+                     </div>
+                  </div>
+                </>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowTutorial(false)}
+                  className="flex-1 py-3 rounded-xl text-[14px] transition-all hover:bg-white/5"
+                  style={{ border: `1px solid rgba(255,255,255,0.1)`, color: textSecondary }}
+                >
+                  跳过引导
+                </button>
+                <button
+                  onClick={() => {
+                    if (tutorialStep < 2) {
+                      setTutorialStep(s => s + 1);
+                    } else {
+                      setShowTutorial(false);
+                    }
+                  }}
+                  className="flex-1 py-3 rounded-xl text-[14px] font-bold transition-all hover:opacity-90"
+                  style={{ background: accent, color: "#070d1c" }}
+                >
+                  {tutorialStep < 2 ? "下一步 →" : "开始游戏"}
+                </button>
               </div>
-
-              <button
-                onClick={() => setShowTutorial(false)}
-                className="w-full py-3.5 rounded-xl text-[15px] font-bold transition-all hover:opacity-90"
-                style={{ background: accent, color: "#070d1c" }}
-              >
-                明白，开始我的研究生生涯
-              </button>
             </div>
           </div>
         )}
