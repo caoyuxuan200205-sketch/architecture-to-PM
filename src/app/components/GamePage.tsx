@@ -681,37 +681,59 @@ const CAMPUS_EVENTS: CampusEvent[] = [
 
 const COMPANIES: Company[] = [
   // 互联网大厂
-  { id: "tencent", name: "腾讯", category: "互联网大厂", thresholds: { logic: 70, expression: 65, structured: 65 }, description: "微信与王者荣耀背后的帝国" },
-  { id: "bytedance", name: "字节跳动", category: "互联网大厂", thresholds: { logic: 72, expression: 68, structured: 65 }, description: "All in，大力出奇迹" },
-  { id: "alibaba", name: "阿里巴巴", category: "互联网大厂", thresholds: { logic: 70, expression: 65, structured: 68 }, description: "让天下没有难做的生意" },
-  { id: "jd", name: "京东", category: "互联网大厂", thresholds: { logic: 68, expression: 62, structured: 62 }, description: "正品低价，用户至上" },
-  { id: "baidu", name: "百度", category: "互联网大厂", thresholds: { logic: 68, expression: 62, structured: 60 }, description: "AI时代的搜索引擎" },
-  { id: "kuaishou", name: "快手", category: "互联网大厂", thresholds: { logic: 65, expression: 60, structured: 60 }, description: "记录世界，记录你" },
+  { id: "tencent", name: "腾讯", category: "互联网大厂", thresholds: { logic: 75, expression: 70, structured: 70 }, description: "微信与王者荣耀背后的帝国" },
+  { id: "bytedance", name: "字节跳动", category: "互联网大厂", thresholds: { logic: 77, expression: 73, structured: 70 }, description: "All in，大力出奇迹" },
+  { id: "alibaba", name: "阿里巴巴", category: "互联网大厂", thresholds: { logic: 75, expression: 70, structured: 73 }, description: "让天下没有难做的生意" },
+  { id: "jd", name: "京东", category: "互联网大厂", thresholds: { logic: 73, expression: 67, structured: 67 }, description: "正品低价，用户至上" },
+  { id: "baidu", name: "百度", category: "互联网大厂", thresholds: { logic: 73, expression: 67, structured: 65 }, description: "AI时代的搜索引擎" },
+  { id: "kuaishou", name: "快手", category: "互联网大厂", thresholds: { logic: 70, expression: 65, structured: 65 }, description: "记录世界，记录你" },
   // 外企科技
-  { id: "google", name: "Google", category: "外企科技", thresholds: { english: 78, logic: 75, structured: 70, expression: 68 }, description: "Don't be evil" },
-  { id: "microsoft", name: "Microsoft", category: "外企科技", thresholds: { english: 75, logic: 72, structured: 70, expression: 65 }, description: "Empowering every person" },
-  { id: "amazon", name: "Amazon", category: "外企科技", thresholds: { english: 75, logic: 70, structured: 68, expression: 65 }, description: "Day 1永远是第一天" },
-  { id: "meta", name: "Meta", category: "外企科技", thresholds: { english: 76, logic: 72, structured: 68, expression: 68 }, description: "连接全世界" },
-  { id: "apple", name: "Apple", category: "外企科技", thresholds: { english: 78, logic: 72, structured: 70, expression: 70 }, description: "Think different" },
+  { id: "google", name: "Google", category: "外企科技", thresholds: { english: 83, logic: 80, structured: 75, expression: 73 }, description: "Don't be evil" },
+  { id: "microsoft", name: "Microsoft", category: "外企科技", thresholds: { english: 80, logic: 77, structured: 75, expression: 70 }, description: "Empowering every person" },
+  { id: "amazon", name: "Amazon", category: "外企科技", thresholds: { english: 80, logic: 75, structured: 73, expression: 70 }, description: "Day 1永远是第一天" },
+  { id: "meta", name: "Meta", category: "外企科技", thresholds: { english: 81, logic: 77, structured: 73, expression: 73 }, description: "连接全世界" },
+  { id: "apple", name: "Apple", category: "外企科技", thresholds: { english: 83, logic: 77, structured: 75, expression: 75 }, description: "Think different" },
   // 咨询公司
-  { id: "mckinsey", name: "McKinsey", category: "咨询公司", thresholds: { logic: 78, structured: 78, expression: 72, english: 68 }, description: "顶级战略咨询，建筑生的另一条路" },
-  { id: "bcg", name: "BCG", category: "咨询公司", thresholds: { logic: 76, structured: 76, expression: 72, english: 65 }, description: "波士顿矩阵的发明者" },
-  { id: "bain", name: "Bain", category: "咨询公司", thresholds: { logic: 75, structured: 75, expression: 70, english: 62 }, description: "Results, not reports" },
+  { id: "mckinsey", name: "McKinsey", category: "咨询公司", thresholds: { logic: 83, structured: 83, expression: 77, english: 73 }, description: "顶级战略咨询，建筑生的另一条路" },
+  { id: "bcg", name: "BCG", category: "咨询公司", thresholds: { logic: 81, structured: 81, expression: 77, english: 70 }, description: "波士顿矩阵的发明者" },
+  { id: "bain", name: "Bain", category: "咨询公司", thresholds: { logic: 80, structured: 80, expression: 75, english: 67 }, description: "Results, not reports" },
+  // 车企
+  { id: "tesla", name: "Tesla", category: "车企", thresholds: { logic: 78, english: 75, structured: 70 }, description: "加速世界向可持续能源的转变" },
+  { id: "nio", name: "蔚来", category: "车企", thresholds: { logic: 75, expression: 70, structured: 70 }, description: "Blue Sky Coming" },
+  { id: "li", name: "理想", category: "车企", thresholds: { logic: 78, structured: 75, expression: 65 }, description: "创造移动的家" },
+  { id: "xpeng", name: "小鹏", category: "车企", thresholds: { logic: 75, structured: 75 }, description: "未来出行探索者" },
+  { id: "byd", name: "比亚迪", category: "车企", thresholds: { logic: 70, structured: 75 }, description: "Build Your Dreams" },
+  // 投行
+  { id: "cicc", name: "中金公司", category: "投行", thresholds: { logic: 85, structured: 80, english: 75 }, description: "植根中国，融通世界" },
+  { id: "citic", name: "中信证券", category: "投行", thresholds: { logic: 82, structured: 78, english: 70 }, description: "中国领先的投资银行" },
+  { id: "goldman", name: "Goldman Sachs", category: "投行", thresholds: { logic: 88, structured: 85, english: 85 }, description: "The gold standard" },
+  { id: "morgan", name: "Morgan Stanley", category: "投行", thresholds: { logic: 86, structured: 83, english: 82 }, description: "Doing first-class business" },
   // 中厂
-  { id: "netease", name: "网易", category: "中厂", thresholds: { logic: 58, expression: 52, structured: 52 }, description: "有态度的互联网公司" },
-  { id: "xiaohongshu", name: "小红书", category: "中厂", thresholds: { logic: 60, expression: 58, structured: 55 }, description: "你的生活指南" },
-  { id: "bilibili", name: "哔哩哔哩", category: "中厂", thresholds: { logic: 58, expression: 55, structured: 52 }, description: "你感兴趣的视频都在B站" },
-  { id: "dewu", name: "得物", category: "中厂", thresholds: { logic: 55, expression: 52, structured: 50 }, description: "年轻人的潮流社区" },
+  { id: "netease", name: "网易", category: "中厂", thresholds: { logic: 63, expression: 57, structured: 57 }, description: "有态度的互联网公司" },
+  { id: "xiaohongshu", name: "小红书", category: "中厂", thresholds: { logic: 65, expression: 63, structured: 60 }, description: "你的生活指南" },
+  { id: "bilibili", name: "哔哩哔哩", category: "中厂", thresholds: { logic: 63, expression: 60, structured: 57 }, description: "你感兴趣的视频都在B站" },
+  { id: "dewu", name: "得物", category: "中厂", thresholds: { logic: 60, expression: 57, structured: 55 }, description: "年轻人的潮流社区" },
+  { id: "ctrip", name: "携程", category: "中厂", thresholds: { logic: 61, expression: 55, structured: 57 }, description: "说走就走的旅行" },
+  { id: "didi", name: "滴滴", category: "中厂", thresholds: { logic: 63, expression: 55, structured: 60 }, description: "美好出行" },
+  { id: "iqiyi", name: "爱奇艺", category: "中厂", thresholds: { logic: 60, expression: 60, structured: 55 }, description: "悦享品质" },
   // 小厂
-  { id: "keep", name: "Keep", category: "小厂", thresholds: { logic: 42, expression: 40, structured: 38 }, description: "自律给我自由" },
-  { id: "soul", name: "Soul", category: "小厂", thresholds: { logic: 40, expression: 42, structured: 38 }, description: "灵魂社交" },
-  { id: "boss", name: "Boss直聘", category: "小厂", thresholds: { logic: 42, expression: 40, structured: 38 }, description: "求职招聘的求职招聘平台" },
-  { id: "moji", name: "墨迹天气", category: "小厂", thresholds: { logic: 38, expression: 38, structured: 35 }, description: "最懂你的天气应用" },
+  { id: "keep", name: "Keep", category: "小厂", thresholds: { logic: 47, expression: 45, structured: 43 }, description: "自律给我自由" },
+  { id: "soul", name: "Soul", category: "小厂", thresholds: { logic: 45, expression: 47, structured: 43 }, description: "灵魂社交" },
+  { id: "boss", name: "Boss直聘", category: "小厂", thresholds: { logic: 47, expression: 45, structured: 43 }, description: "求职招聘的求职招聘平台" },
+  { id: "moji", name: "墨迹天气", category: "小厂", thresholds: { logic: 43, expression: 43, structured: 40 }, description: "最懂你的天气应用" },
+  { id: "fanka", name: "翻咔", category: "小厂", thresholds: { logic: 43, expression: 47, structured: 40 }, description: "高颜值社交" },
+  { id: "mixue", name: "蜜雪冰城", category: "小厂", thresholds: { logic: 45, expression: 50, structured: 43 }, description: "你爱我，我爱你" },
+  { id: "chayan", name: "茶颜悦色", category: "小厂", thresholds: { logic: 43, expression: 50, structured: 40 }, description: "中式茶饮" },
+  { id: "zuoyebang", name: "作业帮", category: "小厂", thresholds: { logic: 47, expression: 43, structured: 45 }, description: "让学习更简单" },
+  { id: "yuanfudao", name: "猿辅导", category: "小厂", thresholds: { logic: 47, expression: 43, structured: 45 }, description: "在线教育科技领先者" },
   // 传统路径
-  { id: "cadg", name: "中国建筑设计研究院", category: "传统路径", thresholds: { arch: 65 }, description: "建筑行业的国家队" },
-  { id: "ecadi", name: "华东建筑设计研究院", category: "传统路径", thresholds: { arch: 62 }, description: "上海的建筑设计名片" },
-  { id: "vanke", name: "万科", category: "传统路径", thresholds: { arch: 58, network: 45 }, description: "住宅开发商的白月光" },
-  { id: "longfor", name: "龙湖", category: "传统路径", thresholds: { arch: 55, network: 42 }, description: "空间即服务" },
+  { id: "cadg", name: "中国建筑设计研究院", category: "传统路径", thresholds: { arch: 70 }, description: "建筑行业的国家队" },
+  { id: "ecadi", name: "华东建筑设计研究院", category: "传统路径", thresholds: { arch: 67 }, description: "上海的建筑设计名片" },
+  { id: "vanke", name: "万科", category: "传统路径", thresholds: { arch: 63, network: 50 }, description: "住宅开发商的白月光" },
+  { id: "longfor", name: "龙湖", category: "传统路径", thresholds: { arch: 60, network: 47 }, description: "空间即服务" },
+  { id: "seu_design", name: "东南大学建筑设计研究院", category: "传统路径", thresholds: { arch: 65 }, description: "学院派建筑高地" },
+  { id: "gad", name: "gad", category: "传统路径", thresholds: { arch: 63 }, description: "高品质商业建筑设计" },
+  { id: "cushman", name: "戴德梁行", category: "传统路径", thresholds: { arch: 55, english: 60, network: 45 }, description: "全球领先的房地产服务商" },
 ];
 
 // ================================================================
@@ -766,6 +788,22 @@ const ENDINGS: Ending[] = [
     description: "你进入了一家顶级咨询公司。不是因为你懂建筑，而是因为你懂如何分解一个复杂的问题，懂如何把混乱的信息整理成一张可以被决策者理解的图。第一个项目是帮一家制造业客户做战略转型，你看着那张流程图，突然想到了建筑里的空间动线分析。\n\n你没有离开那个学建筑的自己，你只是找到了它更大的用法。",
     color: "#9c27b0",
     condition: (s) => s.logic >= 75 && s.structured >= 75 && s.expression >= 70,
+  },
+  {
+    id: "automotive_pm",
+    title: "造车新势力",
+    subtitle: "从建筑空间到移动第三空间",
+    description: "你最终加入了造车新势力。在这里，你不再设计静止的建筑，而是定义移动的智能空间。面试官说：'我们需要懂空间、懂用户、更懂体验的人，而你正好就是。'\n\n坐在试驾车里，看着中控屏上你参与定义的交互逻辑，你突然觉得，这不就是一个微缩的、高密度的、会跑的'建筑'吗？你并没有离开设计，你只是换了一个更快的载体。",
+    color: "#00b8d4",
+    condition: (s) => s.logic >= 75 && s.structured >= 70 && (s.expression >= 65 || s.english >= 70),
+  },
+  {
+    id: "investment_banker",
+    title: "金融新贵",
+    subtitle: "用资本的逻辑重构世界",
+    description: "你穿上定制西装，走进了陆家嘴或中环的高楼。这里没有图纸和模型，只有K线和估值模型。你发现，曾经用来推敲平面布局的逻辑思维，用来分析商业模式竟然也无比顺手。\n\n虽然偶尔深夜加班时，你会想起那个画图的自己，但看着账户里的数字和参与的百亿级项目，你知道，你已经换了一条赛道，而且跑得很快。",
+    color: "#ffd700",
+    condition: (s) => s.logic >= 82 && s.structured >= 78 && s.english >= 75,
   },
   {
     id: "bigtech_pm",
@@ -942,6 +980,12 @@ function calculateEndingWithOffer(stats: Stats, selectedOfferId: string | null):
   } else if (level === "咨询") {
     const e = ENDINGS.find((x) => x.id === "consulting");
     if (e) return e;
+  } else if (level === "投行") {
+    const e = ENDINGS.find((x) => x.id === "investment_banker");
+    if (e) return e;
+  } else if (level === "车企") {
+    const e = ENDINGS.find((x) => x.id === "automotive_pm");
+    if (e) return e;
   } else if (level === "大厂") {
     const e = ENDINGS.find((x) => x.id === "bigtech_pm");
     if (e) return e;
@@ -1047,21 +1091,20 @@ function checkQualifiedCompanies(
     }
   }
 
-  // 随机打乱并最多取 3 个
+  // 数值不够的玩家，qualified 本身为空，直接返回空数组（不保底）
+  if (qualified.length === 0) {
+    return [];
+  }
+
+  // 随机打乱
   for (let i = qualified.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [qualified[i], qualified[j]] = [qualified[j], qualified[i]];
   }
 
-  // 发放 offer 数量逻辑优化：
-  // 原逻辑：Math.floor(Math.random() * 4) -> 可能为 0, 1, 2, 3
-  // 新逻辑：如果 qualified 已经有公司了（说明入围了），至少发 1 个。除非 qualified 本身就是空的。
-  let offerCount = Math.floor(Math.random() * 4); // 0~3
-  
-  // 保底修正：如果有入围公司，且随机到 0 个 offer，则强制改为 1 个
-  if (qualified.length > 0 && offerCount === 0) {
-    offerCount = 1;
-  }
+  // 发放 offer 数量：1~4 随机（均值 2.5，比原来的 0~3 均值 1.5 多一个选择）
+  // 数值低的玩家 qualified 已在上方提前返回空，这里的玩家至少有资格拿 1 个
+  const offerCount = Math.floor(Math.random() * 4) + 1; // 1~4
 
   return qualified.slice(0, offerCount);
 }
@@ -1069,7 +1112,7 @@ function checkQualifiedCompanies(
 // 公司 offer 元信息（薪资与福利，仅用于展示）
 const COMPANY_OFFER_META: Record<
   string,
-  { salary: string; perks: string; level: "大厂" | "中厂" | "小厂" | "外企" | "咨询" | "传统" }
+  { salary: string; perks: string; level: "大厂" | "中厂" | "小厂" | "外企" | "咨询" | "传统" | "车企" | "投行" }
 > = {
   tencent: { salary: "25k·14（月）", perks: "六险一金 · 年终奖金 · 导师制", level: "大厂" },
   bytedance: { salary: "28k·15（月）", perks: "三餐免费 · 股票激励 · 弹性办公", level: "大厂" },
@@ -1102,6 +1145,34 @@ const COMPANY_OFFER_META: Record<
   ecadi: { salary: "17k·14（月）", perks: "一线城市 · 地标项目 · 专业氛围浓", level: "传统" },
   vanke: { salary: "19k·14（月）", perks: "地产资源 · 稳定现金流 · 福利完善", level: "传统" },
   longfor: { salary: "18k·14（月）", perks: "项目多 · 城市轮岗 · 发展路径清晰", level: "传统" },
+  seu_design: { salary: "16k·14（月）", perks: "学院氛围 · 科研项目 · 校园环境", level: "传统" },
+  gad: { salary: "17k·14（月）", perks: "商业项目 · 设计氛围浓 · 成长快", level: "传统" },
+  cushman: { salary: "20k·14（月）", perks: "全球资源 · 英文环境 · 地产人脉", level: "传统" },
+
+  // 车企
+  tesla: { salary: "35k·14（月）", perks: "马斯克文化 · 股票期权 · 国际团队", level: "车企" },
+  nio: { salary: "30k·15（月）", perks: "用车福利 · 快速成长 · 社区文化", level: "车企" },
+  li: { salary: "32k·15（月）", perks: "家庭用车 · 扁平管理 · 绩效奖金", level: "车企" },
+  xpeng: { salary: "28k·14（月）", perks: "技术导向 · 自动驾驶前沿 · 期权", level: "车企" },
+  byd: { salary: "25k·13（月）", perks: "新能源龙头 · 稳定 · 全国布局", level: "车企" },
+
+  // 投行
+  cicc: { salary: "50k·16（月）", perks: "国内顶级 · 央企背景 · 高端人脉", level: "投行" },
+  citic: { salary: "45k·16（月）", perks: "综合金融 · 资源广 · 晋升体系完善", level: "投行" },
+  goldman: { salary: "80k+·16（月）", perks: "全球顶级 · 股票 · 华尔街精英圈", level: "投行" },
+  morgan: { salary: "75k·16（月）", perks: "国际平台 · 高强度培养 · 顶级履历", level: "投行" },
+
+  // 补充中厂
+  ctrip: { salary: "20k·14（月）", perks: "旅游福利 · 弹性假期 · 稳定", level: "中厂" },
+  didi: { salary: "22k·14（月）", perks: "出行补贴 · 年终奖 · 成长快", level: "中厂" },
+  iqiyi: { salary: "19k·14（月）", perks: "内容文化 · 会员权益 · 创意氛围", level: "中厂" },
+
+  // 补充小厂
+  fanka: { salary: "15k·13（月）", perks: "年轻团队 · 高颜值文化", level: "小厂" },
+  mixue: { salary: "16k·13（月）", perks: "下沉市场 · 快速扩张 · 活力氛围", level: "小厂" },
+  chayan: { salary: "15k·13（月）", perks: "中式文化 · 创意设计 · 品牌感强", level: "小厂" },
+  zuoyebang: { salary: "17k·14（月）", perks: "教育赛道 · 技术成长 · 远程灵活", level: "小厂" },
+  yuanfudao: { salary: "17k·14（月）", perks: "在线教育 · 学习氛围 · 成长空间", level: "小厂" },
 };
 
 // 简化的实习机会（根据当前能力值筛选）
@@ -1593,6 +1664,149 @@ const INTERNSHIP_OPTIONS: InternshipOption[] = [
     description: "协助产品经理进行需求调研和数据整理，参与日常的立项会议。",
     minLogic: 40,
     minExpression: 40,
+  },
+  {
+    id: "intern_fanka",
+    title: "内容审核实习生",
+    companyName: "翻咔",
+    stipend: "150 元/天 · 弹性工作",
+    description: "负责LGBT社群内容审核与话题引导，及时处理违规内容。",
+    minLogic: 35,
+    minExpression: 40,
+    detailedAchievements: [
+      "负责社区每日内容巡查，处理违规内容，维护社区健康生态。",
+      "策划周末话题活动，引导用户分享生活动态，提升社区活跃度。",
+    ],
+  },
+  {
+    id: "intern_chayan",
+    title: "新媒体运营实习生",
+    companyName: "茶颜悦色",
+    stipend: "140 元/天 · 奶茶自由",
+    description: "参与公众号与小红书的内容策划，撰写推文。",
+    minLogic: 35,
+    minExpression: 45,
+    detailedAchievements: [
+      "撰写品牌联名活动推文，阅读量突破 5w+。",
+      "负责小红书账号日常运营，拍摄产品图并撰写种草文案。",
+    ],
+  },
+  {
+    id: "intern_ctrip",
+    title: "产品运营实习生",
+    companyName: "携程",
+    stipend: "200 元/天 · 旅游津贴",
+    description: "协助跟进机票/酒店业务线的活动配置与数据复盘。",
+    minLogic: 50,
+    minExpression: 45,
+    detailedAchievements: [
+      "配置大促期间的机票优惠券活动，监控领取率与核销率。",
+      "分析用户退改签数据，输出优化建议报告。",
+    ],
+  },
+  {
+    id: "intern_didi",
+    title: "用户增长实习生",
+    companyName: "滴滴",
+    stipend: "250 元/天 · 晚餐",
+    description: "参与司机端或乘客端的拉新活动策划与执行。",
+    minLogic: 55,
+    minExpression: 45,
+    detailedAchievements: [
+      "协助策划司机端拉新奖励活动，通过数据分析优化奖励梯度。",
+      "负责地推渠道的数据回收与作弊排查。",
+    ],
+  },
+  {
+    id: "intern_iqiyi",
+    title: "内容策略实习生",
+    companyName: "爱奇艺",
+    stipend: "180 元/天 · 追剧自由",
+    description: "分析剧集播放数据，协助制定剧集推广策略。",
+    minLogic: 50,
+    minExpression: 50,
+    detailedAchievements: [
+      "分析站内热播剧集的用户画像，为宣发团队提供数据支持。",
+      "参与自制综艺的选题策划会，提供年轻用户视角的创意。",
+    ],
+  },
+  {
+    id: "intern_zuoyebang",
+    title: "用户研究实习生",
+    companyName: "作业帮",
+    stipend: "200 元/天 · 免费晚餐",
+    description: "协助进行K12用户访谈，整理用户反馈。",
+    minLogic: 45,
+    minExpression: 45,
+    detailedAchievements: [
+      "招募并访谈 20 位初中生家长，挖掘在线辅导痛点。",
+      "整理用户反馈录音，输出用户体验地图。",
+    ],
+  },
+  {
+    id: "intern_yuanfudao",
+    title: "课程产品实习生",
+    companyName: "猿辅导",
+    stipend: "220 元/天 · 零食",
+    description: "参与在线课程的标准化课件制作与验收。",
+    minLogic: 45,
+    minExpression: 40,
+    detailedAchievements: [
+      "审核并优化小学数学课程的互动课件，提升学生完课率。",
+      "跟进直播课现场，收集主讲老师与学生的互动反馈。",
+    ],
+  },
+  {
+    id: "intern_gad",
+    title: "建筑设计实习生",
+    companyName: "gad",
+    stipend: "120 元/天 · 豪宅项目",
+    description: "参与高端住宅项目的立面深化与文本制作。",
+    minLogic: 40,
+    minExpression: 30,
+    detailedAchievements: [
+      "协助绘制某高端住宅项目的立面大样图。",
+      "参与项目汇报文本的排版与分析图绘制。",
+    ],
+  },
+  {
+    id: "intern_cushman",
+    title: "房地产分析实习生",
+    companyName: "戴德梁行",
+    stipend: "150 元/天 · CBD办公",
+    description: "协助撰写写字楼/商业地产市场季度报告。",
+    minLogic: 50,
+    minExpression: 55,
+    detailedAchievements: [
+      "收集并整理主要城市的甲级写字楼租金与空置率数据。",
+      "协助分析师撰写季度市场报告，翻译部分英文摘要。",
+    ],
+  },
+  {
+    id: "intern_tesla",
+    title: "产品体验实习生",
+    companyName: "Tesla",
+    stipend: "200 元/天 · 期权梦想",
+    description: "参与车辆交付环节的用户教育与体验优化。",
+    minLogic: 50,
+    minExpression: 50,
+    detailedAchievements: [
+      "协助交付中心优化车主提车流程，提车满意度提升。",
+      "收集用户对车机系统的反馈，翻译并反馈给总部产品团队。",
+    ],
+  },
+  {
+    id: "intern_cicc",
+    title: "行研分析实习生",
+    companyName: "中金公司",
+    stipend: "300 元/天 · 顶级光环",
+    description: "协助分析师进行行业数据搜集与底稿搭建。",
+    minLogic: 60,
+    minExpression: 45,
+    detailedAchievements: [
+      "负责新能源汽车行业的数据日报更新，熟练使用Wind终端。",
+      "协助撰写深度行业报告的图表绘制与数据核对。",
+    ],
   },
 ];
 
