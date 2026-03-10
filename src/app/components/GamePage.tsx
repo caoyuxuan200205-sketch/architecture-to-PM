@@ -2629,28 +2629,42 @@ export function GamePage() {
                   </div>
                 </>
               )}
-
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setShowTutorial(false)}
-                  className="flex-1 py-3 rounded-xl text-[14px] transition-all hover:bg-white/5"
-                  style={{ border: `1px solid rgba(255,255,255,0.1)`, color: textSecondary }}
-                >
-                  跳过引导
-                </button>
-                <button
-                  onClick={() => {
-                    if (tutorialStep < 2) {
-                      setTutorialStep(s => s + 1);
-                    } else {
-                      setShowTutorial(false);
-                    }
-                  }}
-                  className="flex-1 py-3 rounded-xl text-[14px] font-bold transition-all hover:opacity-90"
-                  style={{ background: accent, color: "#070d1c" }}
-                >
-                  {tutorialStep < 2 ? "下一步 →" : "开始游戏"}
-                </button>
+              
+              <div className="flex flex-col gap-3">
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowTutorial(false)}
+                    className="flex-1 py-3 rounded-xl text-[14px] transition-all hover:bg-white/5"
+                    style={{ border: `1px solid rgba(255,255,255,0.1)`, color: textSecondary }}
+                  >
+                    跳过引导
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (tutorialStep < 2) {
+                        setTutorialStep(s => s + 1);
+                      } else {
+                        setShowTutorial(false);
+                      }
+                    }}
+                    className="flex-1 py-3 rounded-xl text-[14px] font-bold transition-all hover:opacity-90"
+                    style={{ background: accent, color: "#070d1c" }}
+                  >
+                    {tutorialStep < 2 ? "下一步 →" : "开始游戏"}
+                  </button>
+                </div>
+                
+                {tutorialStep === 1 && (
+                  <a
+                    href="https://v.wjx.cn/vm/YDzWe08.aspx#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full py-2.5 rounded-xl text-[12px] text-center transition-all hover:opacity-80"
+                    style={{ background: "rgba(255,255,255,0.05)", color: textSecondary, border: `1px dashed ${textSecondary}` }}
+                  >
+                    ✍️ 随机事件征集：分享你的真实故事
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -2876,17 +2890,28 @@ export function GamePage() {
                   <DeltaBadge key={k} statKey={k} value={displayEvent.effects[k]!} />
                 ))}
               </div>
-              <button
-                onClick={acknowledgeEvent}
-                className="px-5 py-2.5 rounded-xl text-[14px] transition-all hover:opacity-90"
-                style={{
-                  background: displayEvent.type === "positive" ? "rgba(74,222,128,0.15)" : "rgba(239,83,80,0.15)",
-                  color: displayEvent.type === "positive" ? "#4ade80" : "#ef5350",
-                  border: displayEvent.type === "positive" ? "1px solid rgba(74,222,128,0.25)" : "1px solid rgba(239,83,80,0.25)"
-                }}
-              >
-                知道了，继续 →
-              </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={acknowledgeEvent}
+                  className="flex-1 px-5 py-2.5 rounded-xl text-[14px] transition-all hover:opacity-90"
+                  style={{
+                    background: displayEvent.type === "positive" ? "rgba(74,222,128,0.15)" : "rgba(239,83,80,0.15)",
+                    color: displayEvent.type === "positive" ? "#4ade80" : "#ef5350",
+                    border: displayEvent.type === "positive" ? "1px solid rgba(74,222,128,0.25)" : "1px solid rgba(239,83,80,0.25)"
+                  }}
+                >
+                  继续
+                </button>
+                <a
+                  href="https://v.wjx.cn/vm/YDzWe08.aspx#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2.5 rounded-xl text-[13px] transition-all hover:bg-white/5 flex items-center whitespace-nowrap"
+                  style={{ color: textSecondary, border: `1px dashed ${textSecondary}` }}
+                >
+                  ✍️ 投稿故事
+                </a>
+              </div>
             </div>
           )}
 
