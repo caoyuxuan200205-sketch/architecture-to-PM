@@ -1,5 +1,5 @@
 
-  # 近代建筑史研究App (Modern Architecture History Research Game)
+  # 我是一个“建”人：建筑转行模拟器
 
 
 这是一个基于 React + Vite 开发的文字养成类游戏，模拟了建筑学研究生的三年求职生涯。
